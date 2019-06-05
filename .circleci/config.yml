@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ubuntu:disco
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install required packages
+          command: apt update && apt install -y git qmake qt5 qtmultimedia5-dev libqt5svg5-dev libboost-dev libssl-dev libboost-system-dev libboost-filesystem-dev
+
+      - run:
+          name: Build
+          command: mkdir build && qmake .. && make -j
