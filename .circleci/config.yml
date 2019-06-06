@@ -9,12 +9,28 @@ jobs:
 
       - run:
           name: Install required packages
-          command: apt update && apt install -y git qt5-qmake qt5-default qtmultimedia5-dev libqt5svg5-dev libboost-dev libssl-dev libboost-system-dev libboost-filesystem-dev
+          command: apt update && apt install -y git qt5-qmake qt5-default qtmultimedia5-dev libqt5svg5-dev libboost-dev libssl-dev libboost-system-dev libboost-filesystem-dev wget
 
       - run:
           name: Fetch submodules
           command: git submodule update --init --recursive
 
       - run:
+          name: Download linuxdeployqt
+          command: wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" && chmod +x linuxdeployqt-continuous-x86_64.AppImage
+
+      - run:
           name: Build
           command: mkdir build && cd build && qmake .. && make
+
+      - run:
+          name: Make folder structure
+          command: mkdir -p appdir/usr/bin; mkdir -p appdir/usr/lib; mkdir -p appdir/usr/share/applications; mkdir -p appdir/usr/share/icons/default/256x256/apps/
+
+      - run:
+          name: Fill folder structure
+          command: cp build/bin/chatterino appdir/usr/bin; cp resources/chatterino.desktop appdir/usr/share/applications/; cp resources/icon.png appdir/usr/share/icons/default/256/x256/apps/chatterino.png
+
+      - run:
+          name: Generate AppImage
+          command: ./linuxdeployqt-continuous-x86_64.Appimage --appimage-extract-and-run appdir/usr/share/applications/chatterino.desktop -appimage -unsupported-allow-new-glibc -unsupported-bundle-everything
