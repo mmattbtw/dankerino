@@ -34,7 +34,8 @@ boost::optional<EmotePtr> ChatterinoBadges::getBadge(const UserName &username)
 
 void ChatterinoBadges::loadChatterinoBadges()
 {
-    static QUrl url("https://fourtf.com/chatterino/badges.json");
+//    static QUrl url("https://fourtf.com/chatterino/badges.json");
+    static QUrl url("http://www.kotmisia.pl/chatterino/badges.json");
 
     NetworkRequest req(url);
     req.setCaller(QThread::currentThread());
