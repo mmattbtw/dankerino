@@ -8,6 +8,7 @@
 #include "debug/Log.hpp"
 #include "messages/Message.hpp"
 #include "providers/chatterino/ChatterinoBadges.hpp"
+#include "providers/custom_badges/CustomBadges.hpp"
 #include "providers/twitch/TwitchBadges.hpp"
 #include "providers/twitch/TwitchChannel.hpp"
 #include "providers/twitch/TwitchServer.hpp"
@@ -264,6 +265,8 @@ MessagePtr TwitchMessageBuilder::build()
     this->appendTwitchBadges();
 
     this->appendChatterinoBadges();
+
+    this->appendCustomBadges();
 
     this->appendUsername();
 
@@ -1284,7 +1287,15 @@ void TwitchMessageBuilder::appendChatterinoBadges()
                                     MessageElementFlag::BadgeChatterino);
     }
 }
-
+void TwitchMessageBuilder::appendCustomBadges()
+{
+    auto customBadgePtr = getApp()->customBadges->getBadge({this->userName});
+    if (customBadgePtr)
+    {
+        this->emplace<BadgeElement>(*customBadgePtr,
+                                    MessageElementFlag::BadgeCustom);
+    }
+}
 Outcome TwitchMessageBuilder::tryParseCheermote(const QString & /*string*/)
 {
     // auto app = getApp();

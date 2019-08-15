@@ -74,9 +74,10 @@ enum class MessageElementFlag {
     // - Chatterino donator badge
     // - Chatterino top donator badge
     BadgeChatterino = (1 << 18),
+    BadgeCustom = (1 << 31),
 
     Badges = BadgeGlobalAuthority | BadgeChannelAuthority | BadgeSubscription |
-             BadgeVanity | BadgeChatterino,
+             BadgeVanity | BadgeChatterino | BadgeCustom,
 
     ChannelName = (1 << 19),
 

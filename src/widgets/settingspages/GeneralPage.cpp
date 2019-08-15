@@ -218,10 +218,10 @@ void GeneralPage::initLayout(SettingsLayout &layout)
     layout.addCheckbox("Hide moderated messages", s.hideModerated);
     layout.addCheckbox("Hide moderation messages", s.hideModerationActions);
     layout.addCheckbox("Colorize gray nicknames", s.colorizeNicknames);
-    layout.addDropdown<int>(
-        "Timeout stacking style", {"Stack", "Stack sparingly"},
-        s.timeoutStackStyle, [](int index) { return index; },
-        [](auto args) { return args.index; }, false);
+    layout.addDropdown<int>("Timeout stacking style",
+                            {"Stack", "Stack sparingly"}, s.timeoutStackStyle,
+                            [](int index) { return index; },
+                            [](auto args) { return args.index; }, false);
 
     layout.addTitle("Emotes");
     layout.addDropdown<float>(
@@ -253,6 +253,7 @@ void GeneralPage::initLayout(SettingsLayout &layout)
                        getSettings()->showBadgesVanity);
     layout.addCheckbox("Show chatterino badges",
                        getSettings()->showBadgesChatterino);
+    layout.addCheckbox("Show custom badges", getSettings()->showBadgesCustom);
 
     layout.addTitle("Header");
     layout.addCheckbox("Show stream uptime", s.headerUptime);
@@ -278,11 +279,11 @@ void GeneralPage::initLayout(SettingsLayout &layout)
     layout.addCheckbox("Double click links to open", s.linksDoubleClickOnly);
     layout.addCheckbox("Unshorten links", s.unshortLinks);
     layout.addCheckbox("Show live indicator in tabs", s.showTabLive);
-    layout.addDropdown<int>(
-        "Show emote preview in tooltip on hover",
-        {"Don't show", "Always show", "Hold shift"}, s.emotesTooltipPreview,
-        [](int index) { return index; }, [](auto args) { return args.index; },
-        false);
+    layout.addDropdown<int>("Show emote preview in tooltip on hover",
+                            {"Don't show", "Always show", "Hold shift"},
+                            s.emotesTooltipPreview,
+                            [](int index) { return index; },
+                            [](auto args) { return args.index; }, false);
 
     layout.addSpacing(16);
     layout.addSeperator();

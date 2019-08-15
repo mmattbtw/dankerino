@@ -31,6 +31,7 @@ class Fonts;
 class Resources2;
 class Toasts;
 class ChatterinoBadges;
+class CustomBadges;
 
 class Application
 {
@@ -69,6 +70,7 @@ public:
     ModerationActions *const moderationActions{};
     TwitchServer *const twitch2{};
     ChatterinoBadges *const chatterinoBadges{};
+    CustomBadges *const customBadges{};
 
     /*[[deprecated]]*/ Logging *const logging{};
 

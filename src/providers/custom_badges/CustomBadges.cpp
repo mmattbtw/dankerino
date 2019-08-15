@@ -1,4 +1,4 @@
-#include "ChatterinoBadges.hpp"
+#include "CustomBadges.hpp"
 
 #include <QJsonArray>
 #include <QJsonObject>
@@ -7,22 +7,23 @@
 #include "common/NetworkRequest.hpp"
 #include "common/Outcome.hpp"
 #include "messages/Emote.hpp"
+#include "singletons/Settings.hpp"
 
 #include <QUrl>
 
 #include <map>
 
 namespace chatterino {
-void ChatterinoBadges::initialize(Settings &settings, Paths &paths)
+void CustomBadges::initialize(Settings &settings, Paths &paths)
 {
-    this->loadChatterinoBadges();
+    this->loadCustomBadges();
 }
 
-ChatterinoBadges::ChatterinoBadges()
+CustomBadges::CustomBadges()
 {
 }
 
-boost::optional<EmotePtr> ChatterinoBadges::getBadge(const UserName &username)
+boost::optional<EmotePtr> CustomBadges::getBadge(const UserName &username)
 {
     auto it = badgeMap.find(username.string);
     if (it != badgeMap.end())
@@ -32,10 +33,10 @@ boost::optional<EmotePtr> ChatterinoBadges::getBadge(const UserName &username)
     return boost::none;
 }
 
-void ChatterinoBadges::loadChatterinoBadges()
+void CustomBadges::loadCustomBadges()
 {
-    static QUrl url("https://fourtf.com/chatterino/badges.json");
-
+    //default is "http://www.kotmisia.pl/chatterino/badges.json"
+    static QUrl url(getSettings()->customBadgesUrl);
     NetworkRequest req(url);
     req.setCaller(QThread::currentThread());
 
