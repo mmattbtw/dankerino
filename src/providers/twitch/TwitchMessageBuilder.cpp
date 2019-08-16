@@ -1298,53 +1298,61 @@ void TwitchMessageBuilder::appendCustomBadges()
 }
 Outcome TwitchMessageBuilder::tryParseCheermote(const QString & /*string*/)
 {
-    // auto app = getApp();
-    //// Try to parse custom cheermotes
-    // const auto &channelResources = app->resources->channels[this->roomID_];
-    // if (channelResources.loaded) {
-    //    for (const auto &cheermoteSet : channelResources.cheermoteSets) {
-    //        auto match = cheermoteSet.regex.match(string);
-    //        if (!match.hasMatch()) {
-    //            continue;
-    //        }
-    //        QString amount = match.captured(1);
-    //        bool ok = false;
-    //        int numBits = amount.toInt(&ok);
-    //        if (!ok) {
-    //            Log("Error parsing bit amount in tryParseCheermote");
-    //            return Failure;
-    //        }
-
-    //        auto savedIt = cheermoteSet.cheermotes.end();
-
-    //        // Fetch cheermote that matches our numBits
-    //        for (auto it = cheermoteSet.cheermotes.begin(); it !=
-    //        cheermoteSet.cheermotes.end();
-    //             ++it) {
-    //            if (numBits >= it->minBits) {
-    //                savedIt = it;
-    //            } else {
-    //                break;
+    //    auto app = getApp();
+    //    // Try to parse custom cheermotes
+    //    const auto &channelResources = app->resources->channels[this->roomID_];
+    //    if (channelResources.loaded)
+    //    {
+    //        for (const auto &cheermoteSet : channelResources.cheermoteSets)
+    //        {
+    //            auto match = cheermoteSet.regex.match(string);
+    //            if (!match.hasMatch())
+    //            {
+    //                continue;
     //            }
+    //            QString amount = match.captured(1);
+    //            bool ok = false;
+    //            int numBits = amount.toInt(&ok);
+    //            if (!ok)
+    //            {
+    //                log("Error parsing bit amount in tryParseCheermote");
+    //                return Failure;
+    //            }
+
+    //            auto savedIt = cheermoteSet.cheermotes.end();
+
+    //            // Fetch cheermote that matches our numBits
+    //            for (auto it = cheermoteSet.cheermotes.begin();
+    //                 it != cheermoteSet.cheermotes.end(); ++it)
+    //            {
+    //                if (numBits >= it->minBits)
+    //                {
+    //                    savedIt = it;
+    //                }
+    //                else
+    //                {
+    //                    break;
+    //                }
+    //            }
+
+    //            if (savedIt == cheermoteSet.cheermotes.end())
+    //            {
+    //                log("Error getting a cheermote from a cheermote set for the "
+    //                    "bit amount {} ",
+    //                    numBits);
+    //                return Failure;
+    //            }
+
+    //            const auto &cheermote = *savedIt;
+
+    //            this->emplace<EmoteElement>(cheermote.animatedEmote,
+    //                                        MessageElementFlag::BitsAnimated);
+    //            this->emplace<TextElement>(amount, MessageElementFlag::Text,
+    //                                       cheermote.color);
+
+    //            return Success;
     //        }
-
-    //        if (savedIt == cheermoteSet.cheermotes.end()) {
-    //            Log("Error getting a cheermote from a cheermote set for the
-    //            bit amount {}",
-    //                numBits);
-    //            return Failure;
-    //        }
-
-    //        const auto &cheermote = *savedIt;
-
-    //        this->emplace<EmoteElement>(cheermote.animatedEmote,
-    //        MessageElementFlag::BitsAnimated);
-    //        this->emplace<TextElement>(amount, MessageElementFlag::Text,
-    //        cheermote.color);
-
-    //        return Success;
     //    }
-    //}
 
     return Failure;
 }
