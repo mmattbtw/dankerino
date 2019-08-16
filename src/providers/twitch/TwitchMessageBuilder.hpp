@@ -74,6 +74,7 @@ private:
 
     void appendTwitchBadges();
     void appendChatterinoBadges();
+    void appendCustomBadges();
     Outcome tryParseCheermote(const QString &string);
 
     QString roomID_;

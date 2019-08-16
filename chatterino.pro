@@ -124,6 +124,7 @@ SOURCES += \
     src/providers/bttv/BttvEmotes.cpp \
     src/providers/bttv/LoadBttvChannelEmote.cpp \
     src/providers/chatterino/ChatterinoBadges.cpp \
+    src/providers/custom_badges/CustomBadges.cpp \
     src/providers/emoji/Emojis.cpp \
     src/providers/ffz/FfzEmotes.cpp \
     src/providers/ffz/FfzModBadge.cpp \
@@ -298,6 +299,7 @@ HEADERS += \
     src/providers/bttv/BttvEmotes.hpp \
     src/providers/bttv/LoadBttvChannelEmote.hpp \
     src/providers/chatterino/ChatterinoBadges.hpp \
+    src/providers/custom_badges/CustomBadges.hpp \
     src/providers/emoji/Emojis.hpp \
     src/providers/ffz/FfzEmotes.hpp \
     src/providers/ffz/FfzModBadge.hpp \

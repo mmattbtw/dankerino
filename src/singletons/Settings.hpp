@@ -42,8 +42,8 @@ public:
     BoolSetting hideModerated = {"/appearance/messages/hideModerated", false};
     BoolSetting hideModerationActions = {
         "/appearance/messages/hideModerationActions", false};
-    BoolSetting colorizeNicknames = {
-        "/appearance/messages/colorizeNicknames", false};
+    BoolSetting colorizeNicknames = {"/appearance/messages/colorizeNicknames",
+                                     false};
 
     //    BoolSetting collapseLongMessages =
     //    {"/appearance/messages/collapseLongMessages", false};
@@ -82,6 +82,10 @@ public:
                                           true};
     BoolSetting showBadgesVanity = {"/appearance/badges/vanity", true};
     BoolSetting showBadgesChatterino = {"/appearance/badges/chatterino", true};
+    BoolSetting showBadgesCustom = {"/appearance/badges/custom", true};
+    QStringSetting customBadgesUrl = {
+        "/appearance/badges/custom_url",
+        "http://www.kotmisia.pl/chatterino/badges.json"};
 
     /// Behaviour
     BoolSetting allowDuplicateMessages = {"/behaviour/allowDuplicateMessages",
