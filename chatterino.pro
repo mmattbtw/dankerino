@@ -228,7 +228,8 @@ SOURCES += \
     src/widgets/Window.cpp \
     src/controllers/pings/PingController.cpp \
     src/controllers/pings/PingModel.cpp \
-    src/controllers/commands/command_calc.cpp
+    src/controllers/commands/command_calc.cpp \
+    src/controllers/commands/command_mega.cpp
 
 HEADERS += \
     src/Application.hpp \
@@ -418,7 +419,8 @@ HEADERS += \
     src/widgets/Window.hpp \
     src/controllers/pings/PingController.hpp \
     src/controllers/pings/PingModel.hpp \
-    src/controllers/commands/command_calc.hpp
+    src/controllers/commands/command_calc.hpp \
+    src/controllers/commands/command_mega.hpp
 
 RESOURCES += \
     resources/resources.qrc \
