@@ -19,6 +19,9 @@
 #include "util/CombinePath.hpp"
 #include "widgets/dialogs/LogsPopup.hpp"
 
+#include "command_calc.hpp"
+#include "command_mega.hpp"
+
 #include <QApplication>
 #include <QFile>
 #include <QRegularExpression>
@@ -480,6 +483,19 @@ QString CommandController::execCommand(const QString &textNoEmoji,
             }
             QDesktopServices::openUrl("https://www.twitch.tv/popout/" +
                                       channelName + "/viewercard/" + words[1]);
+            return "";
+        #ifdef Q_OS_LINUX
+        }else if (commandName == "/calc")
+        {
+            words.removeFirst();
+            channel->addMessage(makeSystemMessage(words.join(" ")+" = "+run_command_calc(words)));
+            return "";
+        #endif
+        }else if (commandName == "/mega"
+                  || commandName == "/o")
+        {
+            words.removeFirst();
+            channel->sendMessage(command_mega(words));
             return "";
         }
     }
