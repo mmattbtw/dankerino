@@ -377,7 +377,7 @@ void Window::onAccountSelected()
         QString("Chatterino Nightly " CHATTERINO_VERSION
                 " (" UGLYMACROHACK(CHATTERINO_NIGHTLY_VERSION_STRING) ")");
 #else
-    auto windowTitleEnd = QString("Chatterino " CHATTERINO_VERSION);
+    auto windowTitleEnd = QString("Chatterino " CHATTERINO_VERSION "with custom badges");
 #endif
 
     this->setWindowTitle(windowTitleEnd);
