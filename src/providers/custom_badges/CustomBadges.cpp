@@ -35,34 +35,35 @@ boost::optional<EmotePtr> CustomBadges::getBadge(const UserName &username)
 
 void CustomBadges::loadCustomBadges()
 {
-    //default is "http://www.kotmisia.pl/chatterino/badges.json"
     static QUrl url(getSettings()->customBadgesUrl);
-    NetworkRequest req(url);
-    req.setCaller(QThread::currentThread());
 
-    req.onSuccess([this](auto result) -> Outcome {
-        auto jsonRoot = result.parseJson();
-        int index = 0;
-        for (const auto &jsonBadge_ : jsonRoot.value("badges").toArray())
-        {
-            auto jsonBadge = jsonBadge_.toObject();
-            auto emote = Emote{
-                EmoteName{}, ImageSet{Url{jsonBadge.value("image").toString()}},
-                Tooltip{jsonBadge.value("tooltip").toString()}, Url{}};
-
-            emotes.push_back(std::make_shared<const Emote>(std::move(emote)));
-
-            for (const auto &user : jsonBadge.value("users").toArray())
+    NetworkRequest(url)
+        .onSuccess([this](auto result) -> Outcome {
+            auto jsonRoot = result.parseJson();
+            int index = 0;
+            for (const auto &jsonBadge_ : jsonRoot.value("badges").toArray())
             {
-                badgeMap[user.toString()] = index;
+                auto jsonBadge = jsonBadge_.toObject();
+                auto emote = Emote{
+                    EmoteName{},
+                    ImageSet{Url{jsonBadge.value("image1").toString()},
+                             Url{jsonBadge.value("image2").toString()},
+                             Url{jsonBadge.value("image3").toString()}},
+                    Tooltip{jsonBadge.value("tooltip").toString()}, Url{}};
+
+                emotes.push_back(
+                    std::make_shared<const Emote>(std::move(emote)));
+
+                for (const auto &user : jsonBadge.value("users").toArray())
+                {
+                    badgeMap[user.toString()] = index;
+                }
+                ++index;
             }
-            ++index;
-        }
 
-        return Success;
-    });
-
-    req.execute();
+            return Success;
+        })
+        .execute();
 }
 
 }  // namespace chatterino
