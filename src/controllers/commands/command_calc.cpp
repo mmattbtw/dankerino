@@ -1,9 +1,10 @@
 #include "command_calc.hpp"
+#include <QApplication>
+#ifdef Q_OS_LINUX
 #include <iostream>
 #include <stdexcept>
 #include <stdio.h>
 #include <string>
-#include <QApplication>
 #include <QFile>
 #include <QRegularExpression>
 #include <stdlib.h>    // malloc
@@ -61,3 +62,4 @@ QString run_command_calc(QStringList words)
     QString result = exec(cmd.toStdString().c_str()).c_str();
     return result;
 }
+#endif
