@@ -196,6 +196,10 @@ void IrcMessageHandler::handleRoomStateMessage(Communi::IrcMessage *message)
             {
                 roomModes.broadcasterLang = it.value().toString();
             }
+            if ((it = tags.find("followers-only")) != tags.end())
+            {
+                roomModes.followerOnly = it.value().toInt();
+            }
             twitchChannel->setRoomModes(roomModes);
         }
 
@@ -516,12 +520,21 @@ void IrcMessageHandler::handleModeMessage(Communi::IrcMessage *message)
 std::vector<MessagePtr> IrcMessageHandler::parseNoticeMessage(
     Communi::IrcNoticeMessage *message)
 {
-    std::vector<MessagePtr> builtMessages;
+    if (message->content().startsWith("Login auth", Qt::CaseInsensitive))
+    {
+        return {MessageBuilder(systemMessage,
+                               "Login expired! Try logging in again.")
+                    .release()};
+    }
+    else
+    {
+        std::vector<MessagePtr> builtMessages;
 
-    builtMessages.emplace_back(makeSystemMessage(message->content()));
+        builtMessages.emplace_back(makeSystemMessage(message->content()));
 
-    return builtMessages;
-}
+        return builtMessages;
+    }
+}  // namespace chatterino
 
 void IrcMessageHandler::handleNoticeMessage(Communi::IrcNoticeMessage *message)
 {

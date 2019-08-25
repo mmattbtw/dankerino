@@ -103,10 +103,13 @@ public:
         "/behaviour/autocompletion/onlyFetchChattersForSmallerStreamers", true};
     IntSetting smallStreamerLimit = {
         "/behaviour/autocompletion/smallStreamerLimit", 1000};
-    BoolSetting prefixOnlyEmoteCompletion = {"/behaviour/autocompletion/prefixOnlyCompletion", true};
+    BoolSetting prefixOnlyEmoteCompletion = {
+        "/behaviour/autocompletion/prefixOnlyCompletion", true};
 
     BoolSetting pauseChatOnHover = {"/behaviour/pauseChatHover", false};
     BoolSetting autorun = {"/behaviour/autorun", false};
+    BoolSetting mentionUsersWithComma = {"/behaviour/mentionUsersWithComma",
+                                         true};
 
     /// Commands
     BoolSetting allowCommandsAtEnd = {"/commands/allowCommandsAtEnd", false};

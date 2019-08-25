@@ -286,13 +286,20 @@ boost::optional<QPixmap> Image::pixmapOrLoad() const
 {
     assertInGuiThread();
 
+    this->load();
+
+    return this->frames_->current();
+}
+
+void Image::load() const
+{
+    assertInGuiThread();
+
     if (this->shouldLoad_)
     {
         const_cast<Image *>(this)->shouldLoad_ = false;
-        const_cast<Image *>(this)->load();
+        const_cast<Image *>(this)->actuallyLoad();
     }
-
-    return this->frames_->current();
 }
 
 qreal Image::scale() const
@@ -327,50 +334,46 @@ int Image::height() const
     assertInGuiThread();
 
     if (auto pixmap = this->frames_->first())
-        return pixmap->height() * this->scale_;
+        return int(pixmap->height() * this->scale_);
     else
         return 16;
 }
 
-void Image::load()
+void Image::actuallyLoad()
 {
-    NetworkRequest req(this->url().string);
-    req.setExecuteConcurrently(true);
-    req.setCaller(&this->object_);
-    req.setUseQuickLoadCache(true);
+    NetworkRequest(this->url().string)
+        .concurrent()
+        .cache()
+        .onSuccess([weak = weakOf(this)](auto result) -> Outcome {
+            auto shared = weak.lock();
+            if (!shared)
+                return Failure;
 
-    req.onSuccess([that = this, weak = weakOf(this)](auto result) -> Outcome {
-        auto shared = weak.lock();
-        if (!shared)
-            return Failure;
+            auto data = result.getData();
 
-        auto data = result.getData();
+            // const cast since we are only reading from it
+            QBuffer buffer(const_cast<QByteArray *>(&data));
+            buffer.open(QIODevice::ReadOnly);
+            QImageReader reader(&buffer);
+            auto parsed = detail::readFrames(reader, shared->url());
 
-        // const cast since we are only reading from it
-        QBuffer buffer(const_cast<QByteArray *>(&data));
-        buffer.open(QIODevice::ReadOnly);
-        QImageReader reader(&buffer);
-        auto parsed = detail::readFrames(reader, that->url());
+            postToThread(makeConvertCallback(parsed, [weak](auto frames) {
+                if (auto shared = weak.lock())
+                    shared->frames_ = std::make_unique<detail::Frames>(frames);
+            }));
 
-        postToThread(makeConvertCallback(parsed, [weak](auto frames) {
-            if (auto shared = weak.lock())
-                shared->frames_ = std::make_unique<detail::Frames>(frames);
-        }));
+            return Success;
+        })
+        .onError([weak = weakOf(this)](auto /*result*/) -> bool {
+            auto shared = weak.lock();
+            if (!shared)
+                return false;
 
-        return Success;
-    });
+            shared->empty_ = true;
 
-    req.onError([weak = weakOf(this)](auto result) -> bool {
-        auto shared = weak.lock();
-        if (!shared)
-            return false;
-
-        shared->empty_ = true;
-
-        return true;
-    });
-
-    req.execute();
+            return true;
+        })
+        .execute();
 }
 
 bool Image::operator==(const Image &other) const

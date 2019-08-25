@@ -81,6 +81,7 @@ private:
     bool hasBits_ = false;
     bool historicalMessage_ = false;
 
+    QString userId_;
     QColor usernameColor_;
     QString originalMessage_;
     bool senderIsBroadcaster{};
