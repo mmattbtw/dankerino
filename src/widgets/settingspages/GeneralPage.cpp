@@ -625,6 +625,7 @@ void GeneralPage::initLayout(GeneralPageView &layout)
                        s.enableExperimentalIrc);
     layout.addCheckbox("Show unhandled IRC messages",
                        s.showUnhandledIrcMessages);
+<<<<<<< HEAD
     layout.addDropdown<int>(
         "Stack timeouts", {"Stack", "Stack until timeout", "Don't stack"},
         s.timeoutStackStyle,
@@ -640,6 +641,9 @@ void GeneralPage::initLayout(GeneralPageView &layout)
                        s.askOnImageUpload);
     layout.addCheckbox("Messages in /mentions highlights tab",
                        s.highlightMentions);
+=======
+    layout.addCheckbox("Color cycle when typing a message", s.colorCycle);
+>>>>>>> af168045 (Add color cycle option)
 
     layout.addStretch();
 

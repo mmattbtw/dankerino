@@ -772,6 +772,10 @@ void IrcMessageHandler::handleNoticeMessage(Communi::IrcNoticeMessage *message)
 
     for (auto msg : builtMessages)
     {
+        if (message->content() == "Your color has been changed.")
+        {
+            return;
+        }
         QString channelName;
         if (!trimChannelName(message->target(), channelName) ||
             channelName == "jtv")

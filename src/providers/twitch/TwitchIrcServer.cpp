@@ -15,6 +15,8 @@
 #include "providers/twitch/TwitchAccount.hpp"
 #include "providers/twitch/TwitchChannel.hpp"
 #include "providers/twitch/TwitchHelpers.hpp"
+#include "providers/twitch/TwitchMessageBuilder.hpp"
+#include "singletons/Settings.hpp"
 #include "util/PostToThread.hpp"
 
 // using namespace Communi;
@@ -93,6 +95,17 @@ std::shared_ptr<Channel> TwitchIrcServer::createChannel(
 
     channel->sendMessageSignal.connect(
         [this, channel = channel.get()](auto &chan, auto &msg, bool &sent) {
+            if (getSettings()->colorCycle)
+            {
+                static uint a;
+                a += 20;
+                QColor usernameColor = QColor::fromHsl(a % 255, 255, 125);
+
+                this->sendMessage(
+                    getApp()->accounts->twitch.getCurrent().get()->toString(),
+                    "/color " + usernameColor.name());
+            }
+
             this->onMessageSendRequested(channel, msg, sent);
         });
 
