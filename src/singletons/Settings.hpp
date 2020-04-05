@@ -121,6 +121,8 @@ public:
     // BoolSetting useCustomWindowFrame = {"/appearance/useCustomWindowFrame",
     // false};
     BoolSetting colorCycle = {"/appearance/colorCycle", false};
+    BoolSetting colorRainbowNicknames = {"/appearance/colorRainbowNicknames",
+                                         false};
 
     // Badges
     BoolSetting showBadgesGlobalAuthority = {

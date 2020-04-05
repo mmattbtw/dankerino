@@ -591,6 +591,13 @@ void TwitchMessageBuilder::parseRoomID()
 
 void TwitchMessageBuilder::parseUsernameColor()
 {
+    if (getSettings()->colorRainbowNicknames)
+    {
+        static uint nameColor;
+        this->usernameColor_ = QColor::fromHsl(++nameColor % 255, 255, 125);
+        return;
+    }
+
     const auto iterator = this->tags.find("color");
     if (iterator != this->tags.end())
     {
@@ -680,12 +687,14 @@ void TwitchMessageBuilder::appendUsername()
 
     switch (usernameDisplayMode.getValue())
     {
-        case UsernameDisplayMode::Username: {
+        case UsernameDisplayMode::Username:
+        {
             usernameText = username;
         }
         break;
 
-        case UsernameDisplayMode::LocalizedName: {
+        case UsernameDisplayMode::LocalizedName:
+        {
             if (hasLocalizedName)
             {
                 usernameText = localizedName;
@@ -698,7 +707,8 @@ void TwitchMessageBuilder::appendUsername()
         break;
 
         default:
-        case UsernameDisplayMode::UsernameAndLocalizedName: {
+        case UsernameDisplayMode::UsernameAndLocalizedName:
+        {
             if (hasLocalizedName)
             {
                 usernameText = username + "(" + localizedName + ")";

@@ -641,9 +641,8 @@ void GeneralPage::initLayout(GeneralPageView &layout)
                        s.askOnImageUpload);
     layout.addCheckbox("Messages in /mentions highlights tab",
                        s.highlightMentions);
-=======
     layout.addCheckbox("Color cycle when typing a message", s.colorCycle);
->>>>>>> af168045 (Add color cycle option)
+    layout.addCheckbox("Rainbow chat", s.colorRainbowNicknames);
 
     layout.addStretch();
 
