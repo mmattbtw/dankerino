@@ -67,6 +67,7 @@ protected:
 private:
     void onMessageSendRequested(TwitchChannel *channel, const QString &message,
                                 bool &sent);
+    void cycleColor();
 
     std::mutex lastMessageMutex_;
     std::queue<std::chrono::steady_clock::time_point> lastMessagePleb_;

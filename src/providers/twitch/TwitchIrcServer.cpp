@@ -33,6 +33,11 @@ TwitchIrcServer::TwitchIrcServer()
 
     this->pubsub = new PubSub;
 
+    QTimer *timer = new QTimer();
+    timer->setInterval(500);
+    QObject::connect(timer, &QTimer::timeout, [this] { this->cycleColor(); });
+    QTimer::singleShot(2000, [timer] { timer->start(); });
+
     // getSettings()->twitchSeperateWriteConnection.connect([this](auto, auto) {
     // this->connect(); },
     //                                                     this->signalHolder_,
@@ -95,21 +100,24 @@ std::shared_ptr<Channel> TwitchIrcServer::createChannel(
 
     channel->sendMessageSignal.connect(
         [this, channel = channel.get()](auto &chan, auto &msg, bool &sent) {
-            if (getSettings()->colorCycle)
-            {
-                static uint a;
-                a += 20;
-                QColor usernameColor = QColor::fromHsl(a % 255, 255, 125);
-
-                this->sendMessage(
-                    getApp()->accounts->twitch.getCurrent().get()->toString(),
-                    "/color " + usernameColor.name());
-            }
-
             this->onMessageSendRequested(channel, msg, sent);
         });
 
     return std::shared_ptr<Channel>(channel);
+}
+
+void TwitchIrcServer::cycleColor()
+{
+    if (getSettings()->colorCycle)
+    {
+        static uint a;
+        a += 7;
+        QColor usernameColor = QColor::fromHsl(a % 255, 255, 125);
+
+        this->sendMessage(
+            getApp()->accounts->twitch.getCurrent().get()->toString(),
+            "/color " + usernameColor.name());
+    }
 }
 
 void TwitchIrcServer::privateMessageReceived(
