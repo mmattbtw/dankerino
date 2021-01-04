@@ -799,7 +799,7 @@ UserInfoPopup::TimeoutWidget::TimeoutWidget()
     };
 
     const auto addButton = [&](Action action, const QString &title,
-                               const QPixmap &pixmap) {
+                               const QPixmap &pixmap, QKeySequence shortcut) {
         auto button = addLayout(title).emplace<Button>(nullptr);
         button->setPixmap(pixmap);
         button->setScaleIndependantSize(buttonHeight, buttonHeight);
@@ -809,11 +809,18 @@ UserInfoPopup::TimeoutWidget::TimeoutWidget()
             button.getElement(), &Button::leftClicked, [this, action] {
                 this->buttonClicked.invoke(std::make_pair(action, -1));
             });
+
+        auto s = new QShortcut(shortcut, this);
+        s->setContext(Qt::WindowShortcut);
+        QObject::connect(s, &QShortcut::activated, this, [this, action] {
+            this->buttonClicked.invoke(std::make_pair(action, -1));
+        });
     };
 
     auto addTimeouts = [&](const QString &title) {
         auto hbox = addLayout(title);
 
+        int counter = 1;
         for (const auto &item : getSettings()->timeoutButtons.getValue())
         {
             auto a = hbox.emplace<EffectLabel2>();
@@ -829,7 +836,12 @@ UserInfoPopup::TimeoutWidget::TimeoutWidget()
                              [this, pair] {
                                  this->buttonClicked.invoke(pair);
                              });
-
+            auto s = new QShortcut(QKeySequence(counter + 0x30), this);
+            s->setContext(Qt::WindowShortcut);
+            QObject::connect(s, &QShortcut::activated, this, [this, pair] {
+                this->buttonClicked.invoke(pair);
+            });
+            counter++;
             //auto addTimeouts = [&](const QString &title_,
             //                       const std::vector<std::pair<QString, int>> &items) {
             //    auto vbox = layout.emplace<QVBoxLayout>().withoutMargin();
@@ -868,9 +880,9 @@ UserInfoPopup::TimeoutWidget::TimeoutWidget()
         }
     };
 
-    addButton(Unban, "Unban", getResources().buttons.unban);
+    addButton(Unban, "Unban", getResources().buttons.unban, Qt::Key_U);
     addTimeouts("Timeouts");
-    addButton(Ban, "Ban", getResources().buttons.ban);
+    addButton(Ban, "Ban", getResources().buttons.ban, Qt::Key_B);
 }
 
 void UserInfoPopup::TimeoutWidget::paintEvent(QPaintEvent *)
