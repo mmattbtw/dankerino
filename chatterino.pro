@@ -261,6 +261,7 @@ SOURCES += \
     src/widgets/dialogs/IrcConnectionEditor.cpp \
     src/widgets/dialogs/LastRunCrashDialog.cpp \
     src/widgets/dialogs/LoginDialog.cpp \
+    src/widgets/dialogs/LogsPopup.cpp \
     src/widgets/dialogs/NotificationPopup.cpp \
     src/widgets/dialogs/QualityPopup.cpp \
     src/widgets/dialogs/SelectChannelDialog.cpp \
@@ -514,6 +515,7 @@ HEADERS += \
     src/widgets/dialogs/IrcConnectionEditor.hpp \
     src/widgets/dialogs/LastRunCrashDialog.hpp \
     src/widgets/dialogs/LoginDialog.hpp \
+    src/widgets/dialogs/LogsPopup.hpp \
     src/widgets/dialogs/NotificationPopup.hpp \
     src/widgets/dialogs/QualityPopup.hpp \
     src/widgets/dialogs/SelectChannelDialog.hpp \

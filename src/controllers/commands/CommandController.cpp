@@ -19,6 +19,7 @@
 #include "util/FormatTime.hpp"
 #include "util/Twitch.hpp"
 #include "widgets/Window.hpp"
+#include "widgets/dialogs/LogsPopup.hpp"
 #include "widgets/dialogs/UserInfoPopup.hpp"
 
 #include <QApplication>
@@ -544,6 +545,53 @@ void CommandController::initialize(Settings &, Paths &paths)
 
         twitchChannel->createClip();
 
+        return "";
+    });
+    this->registerCommand("/logs", [](const QStringList &words,
+                                      ChannelPtr channel) {
+        if (!channel->isTwitchChannel())
+        {
+            return "";
+        }
+
+        if (words.size() < 2)
+        {
+            channel->addMessage(
+                makeSystemMessage("Usage: /logs [user] (channel)"));
+            return "";
+        }
+        auto app = getApp();
+
+        auto logs = new LogsPopup(&getApp()->windows->getSelectedWindow());
+        QString target = words.at(1);
+
+        if (target.at(0) == '@')
+        {
+            target = target.mid(1);
+        }
+
+        logs->setTargetUserName(target);
+
+        std::shared_ptr<Channel> logsChannel = channel;
+
+        if (words.size() == 3)
+        {
+            QString channelName = words.at(2);
+            if (words.at(2).at(0) == '#')
+            {
+                channelName = channelName.mid(1);
+            }
+
+            logs->setChannelName(channelName);
+
+            logsChannel = app->twitch.server->getChannelOrEmpty(channelName);
+        }
+
+        logs->setChannel(logsChannel);
+
+        logs->getLogs();
+        logs->setAttribute(Qt::WA_DeleteOnClose);
+        logs->show();
         return "";
     });
 

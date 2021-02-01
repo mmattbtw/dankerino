@@ -19,6 +19,7 @@
 #include "util/Shortcut.hpp"
 #include "util/StreamerMode.hpp"
 #include "widgets/Label.hpp"
+#include "widgets/dialogs/LogsPopup.hpp"
 #include "widgets/helper/ChannelView.hpp"
 #include "widgets/helper/EffectLabel.hpp"
 #include "widgets/helper/Line.hpp"
@@ -192,6 +193,8 @@ UserInfoPopup::UserInfoPopup(bool closeAutomatically, QWidget *parent)
         user.emplace<QCheckBox>("Ignore").assign(&this->ui_.ignore);
         user.emplace<QCheckBox>("Ignore highlights")
             .assign(&this->ui_.ignoreHighlights);
+        auto viewLogs = user.emplace<EffectLabel2>(this);
+        viewLogs->getLabel().setText("Online logs");
         auto usercard = user.emplace<EffectLabel2>(this);
         usercard->getLabel().setText("Usercard");
         auto refresh = user.emplace<EffectLabel2>(this);
@@ -214,6 +217,15 @@ UserInfoPopup::UserInfoPopup(bool closeAutomatically, QWidget *parent)
         unvip->setScaleIndependantSize(30, 30);
 
         user->addStretch(1);
+
+        QObject::connect(viewLogs.getElement(), &Button::leftClicked, [this] {
+            auto logs = new LogsPopup(this);
+            logs->setChannel(this->channel_);
+            logs->setTargetUserName(this->userName_);
+            logs->getLogs();
+            logs->setAttribute(Qt::WA_DeleteOnClose);
+            logs->show();
+        });
 
         QObject::connect(usercard.getElement(), &Button::leftClicked, [this] {
             QDesktopServices::openUrl("https://www.twitch.tv/popout/" +

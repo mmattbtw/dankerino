@@ -10,6 +10,7 @@
 - Major: Add GUI for /settitle, /setgame (Mm2PL/chatterino#11)
 - Major: Edit stream tags in GUI (Mm2PL/chatterino#12)
 - Major: Add support for Supibot AFKs in user cards (Mm2PL/dankerino#17)
+- Major: Added back "Online Logs" functionality (Mm2PL/dankerino#26)
 
 ### Chatterino
 
@@ -116,7 +117,6 @@
 - Minor: User Popup now also includes recent user messages (#1729)
 - Minor: BetterTTV / FrankerFaceZ emote tooltips now also have emote authors' name (#1721)
 - Minor: Emotes in the emote popup are now sorted in the same order as the tab completion (#1549)
-- Minor: Removed "Online Logs" functionality as services are shut down (#1640)
 - Minor: CTRL+F now selects the Find text input field in the Settings Dialog (#1806 #1811)
 - Minor: CTRL+F now selects the search text input field in the Search Popup (#1812)
 - Minor: Modify our word boundary logic in highlight phrase searching to accomodate non-regex phrases with "word-boundary-creating" characters like ! (#1885, #1890)
