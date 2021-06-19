@@ -1313,6 +1313,22 @@ void TwitchMessageBuilder::liveMessage(const QString &channelName,
     builder->message().searchText = text;
     builder->message().messageText = text;
 }
+void TwitchMessageBuilder::offlineMessage(const QString &channelName,
+                                          const QString &uptime,
+                                          MessageBuilder *builder)
+{
+    builder->emplace<TimestampElement>();
+    builder
+        ->emplace<TextElement>(channelName, MessageElementFlag::Username,
+                               MessageColor::Text, FontStyle::ChatMediumBold)
+        ->setLink({Link::UserInfo, channelName});
+    auto text = QString("was live for %1").arg(uptime);
+    builder->emplace<TextElement>(text, MessageElementFlag::Text,
+                                  MessageColor::Text);
+    auto msgText = channelName + " " + text;
+    builder->message().searchText = msgText;
+    builder->message().messageText = msgText;
+}
 
 void TwitchMessageBuilder::liveSystemMessage(const QString &channelName,
                                              MessageBuilder *builder)

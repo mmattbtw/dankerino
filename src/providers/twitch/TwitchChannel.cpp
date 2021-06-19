@@ -629,7 +629,13 @@ void TwitchChannel::setLive(bool newLiveStatus)
 
                     if (s->messageText == liveMessageSearchText)
                     {
-                        s->flags.set(MessageFlag::Disabled);
+                        // replacement message
+                        MessageBuilder builder;
+                        TwitchMessageBuilder::offlineMessage(
+                            this->getDisplayName(), guard->uptime, &builder);
+                        builder->flags.set(MessageFlag::Disabled);
+                        getApp()->twitch2->liveChannel->replaceMessage(
+                            s, builder.release());
                         break;
                     }
                 }
