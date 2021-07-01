@@ -786,6 +786,63 @@ void CommandController::initialize(Settings &, Paths &paths)
         }
         return "";
     });
+    this->registerCommand(
+        "/if",
+        [](const QStringList &words, const ChannelPtr channel) -> QString {
+            if (words.size() < 4)
+            {
+                channel->addMessage(makeSystemMessage(
+                    "Usage: /if {<filter condition>} {<command if true>} "
+                    "{<command if false>}."));
+                return "";
+            }
+            auto cmdText = words.mid(1).join(" ");
+            qDebug() << cmdText;
+            std::vector<QString> parts;
+            for (int i = 0; i < 3; i++)
+            {
+                int endPart;
+                bool partHasBraces = cmdText.startsWith("{");
+                if (partHasBraces)
+                {
+                    endPart = cmdText.indexOf("}") + 2;
+                }
+                else
+                {
+                    endPart = cmdText.indexOf(" ") + 1;
+                    if (endPart == -1)
+                    {
+                        endPart = cmdText.size() - 1;
+                    }
+                }
+                qDebug() << cmdText;
+                auto part = cmdText.left(endPart);
+                if (partHasBraces)
+                {
+                    part = part.remove("{").remove("}");
+                }
+                cmdText.remove(0, endPart);
+                parts.push_back(part);
+                qDebug() << "part" << i << partHasBraces << endPart << part
+                         << cmdText;
+            }
+            auto parser = filterparser::FilterParser(parts[0]);
+            if (!parser.valid())
+            {
+                channel->addMessage(makeSystemMessage(
+                    "Unable to parse expression: " + parts[0]));
+                return "";
+            }
+            filterparser::ContextMap ctx = {
+                {"channel.name", channel->getName()},
+
+                {"author.name",
+                 getApp()->accounts->twitch.getCurrent()->getUserName()},
+            };
+            bool output = parser.execute(ctx);
+            qDebug() << "filter parser returned" << output;
+            return parts[output ? 1 : 2];
+        });
 }
 
 void CommandController::save()
