@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - color-wheel
   pull_request:
 
 jobs:
