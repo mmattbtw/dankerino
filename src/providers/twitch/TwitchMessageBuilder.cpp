@@ -667,7 +667,7 @@ void TwitchMessageBuilder::appendUsername()
     {
         if (nickname.regex())
         {
-            const auto &regex = QRegularExpression("^" + nickname.name() + "$");
+            const auto &regex = QRegularExpression(nickname.name());
             if (!regex.isValid())
             {
                 continue;
