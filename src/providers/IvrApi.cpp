@@ -58,6 +58,34 @@ void IvrApi::getBulkEmoteSets(QString emoteSetList,
         .finally(std::move(finallyCallback))
         .execute();
 }
+void IvrApi::getEmote(QString identifier, bool isId,
+                      ResultCallback<IvrV2Emote> successCallback,
+                      IvrFailureCallback failureCallback,
+                      std::function<void()> finallyCallback)
+{
+    QUrlQuery urlQuery;
+    if (isId)
+    {
+        urlQuery.addQueryItem("id", "true");
+    }
+
+    this->makeRequest(QString("v2/twitch/emotes/%1").arg(identifier), urlQuery)
+        .onSuccess([successCallback, failureCallback](auto result) -> Outcome {
+            auto root = result.parseJson();
+
+            successCallback(root);
+
+            return Success;
+        })
+        .onError([failureCallback](auto result) {
+            qCWarning(chatterinoIvr)
+                << "Failed IVR API Call!" << result.status()
+                << QString(result.getData());
+            failureCallback();
+        })
+        .finally(std::move(finallyCallback))
+        .execute();
+}
 
 NetworkRequest IvrApi::makeRequest(QString url, QUrlQuery urlQuery)
 {

@@ -22,6 +22,7 @@
 #include "util/StreamLink.hpp"
 #include "util/Twitch.hpp"
 #include "widgets/Window.hpp"
+#include "widgets/dialogs/EmoteInfoPopup.hpp"
 #include "widgets/dialogs/UserInfoPopup.hpp"
 #include "widgets/splits/Split.hpp"
 
@@ -396,6 +397,16 @@ void CommandController::initialize(Settings &, Paths &paths)
                 "Unignore command has been renamed to /unblock, please use it "
                 "from now on as /unignore is going to be removed soon."));
             unblockLambda(words, channel);
+            return "";
+        });
+    this->registerCommand(
+        "/xd", [unblockLambda](const auto &words, auto channel) {
+            channel->addMessage(makeSystemMessage("xD!"));
+            auto *emotePopup = new EmoteInfoPopup(
+                "129570", getSettings()->autoCloseUserPopup,
+                static_cast<QWidget *>(&(getApp()->windows->getMainWindow())));
+            emotePopup->move(QCursor::pos());
+            emotePopup->show();
             return "";
         });
 

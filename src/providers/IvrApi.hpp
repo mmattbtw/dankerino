@@ -73,6 +73,31 @@ struct IvrEmote {
     }
 };
 
+struct IvrV2Emote {
+    const QString channelName;
+    const QString channelDisplayName;
+    const QString channelId;
+    const QString id;
+    const QString code;
+    const QString setId;
+    const QString assetType;
+    const QString type;
+    const QString tier;
+
+    IvrV2Emote(QJsonObject root)
+        : channelName(root.value("channelLogin").toString())
+        , channelDisplayName(root.value("channelName").toString())
+        , channelId(root.value("channelID").toString())
+        , id(root.value("emoteID").toString())
+        , code(root.value("emoteCode").toString())
+        , setId(root.value("emoteSetID").toString())
+        , assetType(root.value("emoteAssetType").toString())
+        , type(root.value("emoteType").toString())
+        , tier(root.value("emoteTier").toString())
+    {
+    }
+};
+
 class IvrApi final : boost::noncopyable
 {
 public:
@@ -86,6 +111,12 @@ public:
                           ResultCallback<QJsonArray> successCallback,
                           IvrFailureCallback failureCallback,
                           std::function<void()> finallyCallback);
+
+    // https://api.ivr.fi/v2/docs/static/index.html#/Twitch/get_twitch_emotes__emote_
+    void getEmote(QString identifier, bool isId,
+                  ResultCallback<IvrV2Emote> successCallback,
+                  IvrFailureCallback failureCallback,
+                  std::function<void()> finallyCallback);
 
     static void initialize();
 

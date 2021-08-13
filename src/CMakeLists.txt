@@ -346,6 +346,8 @@ set(SOURCE_FILES
         widgets/dialogs/ChannelFilterEditorDialog.hpp
         widgets/dialogs/ColorPickerDialog.cpp
         widgets/dialogs/ColorPickerDialog.hpp
+        widgets/dialogs/EmoteInfoPopup.cpp
+        widgets/dialogs/EmoteInfoPopup.hpp
         widgets/dialogs/EmotePopup.cpp
         widgets/dialogs/EmotePopup.hpp
         widgets/dialogs/IrcConnectionEditor.cpp

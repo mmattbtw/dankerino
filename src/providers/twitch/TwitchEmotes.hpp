@@ -40,9 +40,9 @@ public:
     TwitchEmotes();
 
     EmotePtr getOrCreateEmote(const EmoteId &id, const EmoteName &name);
+    Url getEmoteLink(const EmoteId &id, const QString &emoteScale);
 
 private:
-    Url getEmoteLink(const EmoteId &id, const QString &emoteScale);
     UniqueAccess<std::unordered_map<EmoteId, std::weak_ptr<Emote>>>
         twitchEmotesCache_;
 

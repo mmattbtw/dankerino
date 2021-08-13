@@ -270,6 +270,7 @@ SOURCES += \
     src/widgets/dialogs/BadgePickerDialog.cpp \
     src/widgets/dialogs/ChannelFilterEditorDialog.cpp \
     src/widgets/dialogs/ColorPickerDialog.cpp \
+    src/widgets/dialogs/EmoteInfoPopup.cpp \
     src/widgets/dialogs/EmotePopup.cpp \
     src/widgets/dialogs/IrcConnectionEditor.cpp \
     src/widgets/dialogs/LastRunCrashDialog.cpp \
@@ -539,6 +540,7 @@ HEADERS += \
     src/widgets/dialogs/BadgePickerDialog.hpp \
     src/widgets/dialogs/ChannelFilterEditorDialog.hpp \
     src/widgets/dialogs/ColorPickerDialog.hpp \
+    src/widgets/dialogs/EmoteInfoPopup.hpp \
     src/widgets/dialogs/EmotePopup.hpp \
     src/widgets/dialogs/IrcConnectionEditor.hpp \
     src/widgets/dialogs/LastRunCrashDialog.hpp \
