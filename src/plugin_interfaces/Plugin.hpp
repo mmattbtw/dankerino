@@ -2,6 +2,9 @@
 
 #include <QString>
 
+#include "plugin_interfaces/Completer.hpp"
+#include "plugin_interfaces/Plugin.hpp"
+
 namespace chatterino {
 
 namespace plugin_interfaces {
@@ -9,7 +12,7 @@ namespace plugin_interfaces {
     class Plugin
     {
     public:
-        virtual ~Plugin (){};
+        virtual ~Plugin(){};
         virtual QString name() const = 0;
     };
 

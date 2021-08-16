@@ -612,6 +612,7 @@ HEADERS += \
     src/widgets/TooltipWidget.hpp \
     src/widgets/Window.hpp \
     src/plugin_interfaces/Completer.hpp \
+    src/plugin_interfaces/Plugin.hpp \
 
 RESOURCES += \
     resources/resources.qrc \

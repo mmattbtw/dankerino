@@ -35,7 +35,7 @@ void Plugins::initialize(Settings &settings, Paths &paths)
         }
         else
         {
-            qDebug() << "unable to load" << fileName;
+            qDebug() << "unable to load" << fileName << loader.errorString();
         }
     }
 }

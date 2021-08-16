@@ -7,7 +7,7 @@ namespace chatterino {
 
 namespace plugin_interfaces {
 
-    class CompleterPlugin : public Plugin
+    class CompleterPlugin
     {
     public:
         virtual ~CompleterPlugin(){};
