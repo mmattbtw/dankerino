@@ -18,7 +18,6 @@ public:
     Plugins();
     void initialize(Settings &settings, Paths &paths) override;
 
-    // completers
     void forEachPlugin(
         std::function<void(plugin_interfaces::Plugin *plugin)> action);
 };
