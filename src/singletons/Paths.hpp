@@ -31,6 +31,9 @@ public:
     // Profile avatars for twitch <appDataDirectory>/cache/twitch
     QString twitchProfileAvatars;
 
+    // Plugins go here
+    QString pluginsDirectory;
+
     bool createFolder(const QString &folderPath);
     bool isPortable();
 

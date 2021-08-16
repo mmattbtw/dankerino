@@ -15,8 +15,7 @@ void Plugins::initialize(Settings &settings, Paths &paths)
     {
         return;
     }
-    QDir pluginsDir = paths.miscDirectory;
-    pluginsDir.cd("plugins");
+    QDir pluginsDir = paths.pluginsDirectory;
 
     const auto entryList = pluginsDir.entryList(QDir::Files);
     for (const QString &fileName : entryList)
