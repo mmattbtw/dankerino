@@ -11,8 +11,6 @@ namespace chatterino {
 
 void Plugins::initialize(Settings &settings, Paths &paths)
 {
-    qDebug() << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     QDir pluginsDir = paths.miscDirectory;
     pluginsDir.cd("plugins");
 
