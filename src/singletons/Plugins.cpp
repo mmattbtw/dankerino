@@ -11,6 +11,10 @@ namespace chatterino {
 
 void Plugins::initialize(Settings &settings, Paths &paths)
 {
+    if (!settings.enablePlugins)
+    {
+        return;
+    }
     QDir pluginsDir = paths.miscDirectory;
     pluginsDir.cd("plugins");
 

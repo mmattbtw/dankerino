@@ -443,6 +443,7 @@ public:
 
     BoolSetting dankerinoThreeLetterApiEasterEgg = {
         "/misc/dankerinoThreeLetterApiEasterEgg", false};
+    BoolSetting enablePlugins = {"/plugins/enable", false};
 
 private:
     BoolSetting nonceFuckeryMigrated_ = {"/misc/nonceFuckeryMigrated", false};
