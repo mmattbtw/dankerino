@@ -5,6 +5,7 @@
 
 ### Dankerino
 
+- Major: Add a simple plugin API (Mm2PL/Dankerino#106)
 - Major: Add 7TV emotes from Chatterino7 (Mm2PL/Dankerino#79)
 - Minor: Move Dankerino settings to a separate tab (Mm2PL/Dankerino#84)
 - Minor: Add advanced IRC tag related settings (Mm2PL/Dankerino#86)
