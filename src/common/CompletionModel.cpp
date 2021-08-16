@@ -96,11 +96,12 @@ void CompletionModel::refresh(const QString &prefix, bool isFirstWord)
     }
     getApp()->plugins->forEachPlugin(
         [addString, prefix, isFirstWord,
-         &channel = this->channel_](QObject *plugin) {
+         &channel = this->channel_](plugin_interfaces::Plugin *plugin) {
             auto completer =
-                qobject_cast<plugin_interfaces::CompleterPlugin *>(plugin);
+                dynamic_cast<plugin_interfaces::CompleterPlugin *>(plugin);
             if (completer)
             {
+                qDebug() << "adding completions from" << plugin->name();
                 completer->refresh(addString, prefix, isFirstWord, channel);
             }
         });

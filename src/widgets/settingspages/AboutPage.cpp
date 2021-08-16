@@ -3,6 +3,7 @@
 #include "common/Modes.hpp"
 #include "common/QLogging.hpp"
 #include "common/Version.hpp"
+#include "singletons/Plugins.hpp"
 #include "util/LayoutCreator.hpp"
 #include "util/RemoveScrollAreaBackground.hpp"
 #include "widgets/BasePopup.hpp"
@@ -163,6 +164,16 @@ AboutPage::AboutPage()
                               "(<a href=\"https://github.com/iamcal/emoji-data/blob/master/LICENSE\">show license</a>)")->setOpenExternalLinks(true);
             l.emplace<QLabel>("GraphQL Logo is licensed under <a href=\"https://github.com/graphql/graphql-spec/issues/398#issuecomment-426844088\">CC-BY-4.0</a>)")->setOpenExternalLinks(true);
             // clang-format on
+        }
+
+        auto pluginsDisplay = layout.emplace<QGroupBox>("Plugins loaded:");
+        {
+            auto list = pluginsDisplay.emplace<QVBoxLayout>();
+
+            getApp()->plugins->forEachPlugin(
+                [&list](plugin_interfaces::Plugin *plugin) {
+                    list.emplace<QLabel>(plugin->name());
+                });
         }
 
         // Contributors

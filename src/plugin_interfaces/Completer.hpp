@@ -1,12 +1,13 @@
 #pragma once
 
 #include "common/CompletionModel.hpp"
+#include "plugin_interfaces/Plugin.hpp"
 
 namespace chatterino {
 
 namespace plugin_interfaces {
 
-    class CompleterPlugin
+    class CompleterPlugin : public Plugin
     {
     public:
         virtual ~CompleterPlugin(){};

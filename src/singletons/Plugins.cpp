@@ -21,7 +21,17 @@ void Plugins::initialize(Settings &settings, Paths &paths)
         QObject *plugin = loader.instance();
         if (plugin)
         {
-            this->items_.push_back(plugin);
+            qDebug() << "Loaded" << fileName;
+            auto pl = dynamic_cast<plugin_interfaces::Plugin *>(plugin);
+            if (pl)
+            {
+                qDebug() << "plugin!";
+                this->items_.push_back(pl);
+            }
+            else
+            {
+                qDebug() << "no plugin!";
+            }
         }
         else
         {
@@ -34,13 +44,18 @@ Plugins::Plugins()
 {
 }
 
-void Plugins::forEachPlugin(std::function<void(QObject *)> action)
+void Plugins::forEachPlugin(
+    std::function<void(plugin_interfaces::Plugin *)> action)
 {
     for (QObject *plugin : QPluginLoader::staticInstances())
     {
-        action(plugin);
+        auto pl = qobject_cast<plugin_interfaces::Plugin *>(plugin);
+        if (pl)
+        {
+            action(pl);
+        }
     }
-    for (QObject *plugin : this->items_)
+    for (plugin_interfaces::Plugin *plugin : this->items_)
     {
         action(plugin);
     }
