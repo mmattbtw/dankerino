@@ -65,6 +65,12 @@ void DankerinoPage::initLayout(GeneralPageView &layout)
                            "advanced settings "
                            "(requires restart)",
                            s.dankerinoThreeLetterApiEasterEgg);
+        layout.addCheckbox(
+            "Enable EXPERIMENTAL plugin support (requires restart). Your "
+            "chatterino might crash unexpectedly if you have plugins! Plugins "
+            "can load arbitrary code into Chatterino, be sure you trust their "
+            "authors!",
+            s.enablePlugins);
         layout.addTitle("Random 'hacks'");
         layout.addCheckbox("Enable. Required for settings below to work!",
                            s.nonceFuckeryEnabled);
