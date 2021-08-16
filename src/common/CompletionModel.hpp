@@ -12,6 +12,7 @@ class Channel;
 
 class CompletionModel : public QAbstractListModel
 {
+public:
     struct TaggedString {
         enum Type {
             Username,
@@ -43,7 +44,6 @@ class CompletionModel : public QAbstractListModel
         Type type;
     };
 
-public:
     CompletionModel(Channel &channel);
 
     virtual int columnCount(const QModelIndex &) const override;

@@ -235,6 +235,7 @@ SOURCES += \
     src/singletons/Logging.cpp \
     src/singletons/NativeMessaging.cpp \
     src/singletons/Paths.cpp \
+    src/singletons/Plugins.cpp \
     src/singletons/Resources.cpp \
     src/singletons/Settings.cpp \
     src/singletons/Theme.cpp \
@@ -483,6 +484,7 @@ HEADERS += \
     src/singletons/Logging.hpp \
     src/singletons/NativeMessaging.hpp \
     src/singletons/Paths.hpp \
+    src/singletons/Plugins.hpp \
     src/singletons/Resources.hpp \
     src/singletons/Settings.hpp \
     src/singletons/Theme.hpp \
@@ -609,6 +611,7 @@ HEADERS += \
     src/widgets/StreamView.hpp \
     src/widgets/TooltipWidget.hpp \
     src/widgets/Window.hpp \
+    src/plugin_interfaces/Completer.hpp \
 
 RESOURCES += \
     resources/resources.qrc \

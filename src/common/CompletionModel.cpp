@@ -9,9 +9,12 @@
 #include "providers/twitch/TwitchChannel.hpp"
 #include "providers/twitch/TwitchIrcServer.hpp"
 #include "singletons/Emotes.hpp"
+#include "singletons/Plugins.hpp"
 #include "singletons/Settings.hpp"
 #include "util/Helpers.hpp"
 #include "util/QStringHash.hpp"
+
+#include "plugin_interfaces/Completer.hpp"
 
 #include <QtAlgorithms>
 #include <utility>
@@ -76,15 +79,6 @@ void CompletionModel::refresh(const QString &prefix, bool isFirstWord)
 {
     std::lock_guard<std::mutex> guard(this->itemsMutex_);
     this->items_.clear();
-
-    if (prefix.length() < 2 || !this->channel_.isTwitchChannel())
-    {
-        return;
-    }
-
-    // Twitch channel
-    auto tc = dynamic_cast<TwitchChannel *>(&this->channel_);
-
     std::function<void(const QString &str, TaggedString::Type type)> addString;
     if (getSettings()->prefixOnlyEmoteCompletion)
     {
@@ -100,6 +94,24 @@ void CompletionModel::refresh(const QString &prefix, bool isFirstWord)
                 this->items_.emplace(str + " ", type);
         };
     }
+    getApp()->plugins->forEachPlugin(
+        [addString, prefix, isFirstWord,
+         &channel = this->channel_](QObject *plugin) {
+            auto completer =
+                qobject_cast<plugin_interfaces::CompleterPlugin *>(plugin);
+            if (completer)
+            {
+                completer->refresh(addString, prefix, isFirstWord, channel);
+            }
+        });
+
+    if (prefix.length() < 2 || !this->channel_.isTwitchChannel())
+    {
+        return;
+    }
+
+    // Twitch channel
+    auto tc = dynamic_cast<TwitchChannel *>(&this->channel_);
 
     if (auto account = getApp()->accounts->twitch.getCurrent())
     {

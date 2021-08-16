@@ -29,6 +29,7 @@ class ChatterinoBadges;
 class DankerinoBadges;
 class SeventvBadges;
 class FfzBadges;
+class Plugins;
 
 class Application
 {
@@ -63,6 +64,7 @@ public:
     DankerinoBadges *const dankerinoBadges{};
     SeventvBadges *const seventvBadges{};
     FfzBadges *const ffzBadges{};
+    Plugins *const plugins{};
 
     /*[[deprecated]]*/ Logging *const logging{};
 

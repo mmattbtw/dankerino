@@ -27,6 +27,7 @@
 #include "singletons/Logging.hpp"
 #include "singletons/NativeMessaging.hpp"
 #include "singletons/Paths.hpp"
+#include "singletons/Plugins.hpp"
 #include "singletons/Resources.hpp"
 #include "singletons/Settings.hpp"
 #include "singletons/Theme.hpp"
@@ -68,6 +69,7 @@ Application::Application(Settings &_settings, Paths &_paths)
     , seventvBadges(&this->emplace<SeventvBadges>())
     , ffzBadges(&this->emplace<FfzBadges>())
     , logging(&this->emplace<Logging>())
+    , plugins(&this->emplace<Plugins>())
 {
     this->instance = this;
 
