@@ -97,7 +97,14 @@ jobs:
             cp release/chatterino.exe Chatterino2/
             echo nightly > Chatterino2/modes
             7z a chatterino-windows-x86-64.zip Chatterino2/
-            
+      - name: Build plugins with QMake (Windows)
+        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'qmake'
+        run: |
+            for i in *; do cd $i; mkdir build && cd build && qmake .. && cl=/MP nmake /S /NOLOGO; cd ..; done
+            tree
+        shell: bash
+
+
       - name: Build with CMake (Windows)
         if: startsWith(matrix.os, 'windows') && matrix.build-system == 'cmake'
         run: |
@@ -117,6 +124,13 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:
           name: chatterino-windows-x86-64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
+          path: build/chatterino-windows-x86-64.zip
+
+      - name: Upload artifact - plugins.zip (Windows)
+        if: startsWith(matrix.os, 'windows')
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: chatterino_plugins-windows-x86-64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
           path: build/chatterino-windows-x86-64.zip
 
       # LINUX
