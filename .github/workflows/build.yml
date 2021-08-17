@@ -143,7 +143,8 @@ jobs:
                 libxcb-keysyms1 \
                 libxcb-render-util0 \
                 libxcb-xinerama0 \
-                libxcb-randr0
+                libxcb-randr0 \
+                zip
 
       - name: Build (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu') && matrix.build-system == 'qmake'
@@ -163,6 +164,20 @@ jobs:
             make -j8
         shell: bash
 
+      - name: Build plugins with QMake (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu') && matrix.build-system == 'qmake'
+        run: |
+            cd plugins
+            for i in *; do cd $i; mkdir build && cd build && qmake .. && make -j8; cd ..; done
+            cd ..
+        shell: bash
+
+      - name: Package plugins (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu') && matrix.build-system == 'qmake'
+        run: |
+            zip plugins.zip plugins/built/*
+        shell: bash
+
       - name: Package - AppImage (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -176,6 +191,13 @@ jobs:
             cd build
             sh ./../.CI/CreateUbuntuDeb.sh
         shell: bash
+
+      - name: Upload artifact - plugins.zip (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu')
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: Chatterino_plugins-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
+          path: plugins/built/plugins.zip
 
       - name: Upload artifact - AppImage (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
