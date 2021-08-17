@@ -6,7 +6,7 @@ INCLUDEPATH  += ../../src
 HEADERS       = supibot_completion.h
 SOURCES       =
 TARGET        = $$qtLibraryTarget(supibot_completion)
-DESTDIR       = ../built
+DESTDIR       = ../../built
 
 git_commit=$$(GIT_COMMIT)
 git_release=$$(GIT_RELEASE)

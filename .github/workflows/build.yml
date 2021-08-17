@@ -172,12 +172,6 @@ jobs:
             cd ..
         shell: bash
 
-      - name: Package plugins (Ubuntu)
-        if: startsWith(matrix.os, 'ubuntu') && matrix.build-system == 'qmake'
-        run: |
-            zip plugins.zip plugins/built/*
-        shell: bash
-
       - name: Package - AppImage (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -197,7 +191,7 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:
           name: Chatterino_plugins-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
-          path: plugins/built/plugins.zip
+          path: plugins/built/*
 
       - name: Upload artifact - AppImage (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
