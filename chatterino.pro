@@ -613,6 +613,7 @@ HEADERS += \
     src/widgets/Window.hpp \
     src/plugin_interfaces/Completer.hpp \
     src/plugin_interfaces/Plugin.hpp \
+    src/plugin_interfaces/MessageCreator.hpp \
 
 RESOURCES += \
     resources/resources.qrc \

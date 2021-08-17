@@ -1,9 +1,11 @@
 #include "singletons/Plugins.hpp"
 
+#include "messages/MessageBuilder.hpp"
 #include "singletons/Paths.hpp"
 
 // for side-effects
 #include "plugin_interfaces/Completer.hpp"
+#include "plugin_interfaces/MessageCreator.hpp"
 
 #include <QPluginLoader>
 
@@ -41,6 +43,23 @@ void Plugins::initialize(Settings &settings, Paths &paths)
             qDebug() << "unable to load" << fileName << loader.errorString();
         }
     }
+    // initialize plugins!
+    this->forEachPlugin([](plugin_interfaces::Plugin *plugin) {
+        auto pl =
+            dynamic_cast<plugin_interfaces::MessageCreatorPlugin *>(plugin);
+        if (pl)
+        {
+            pl->setMessageCreationFunctionPointers(
+                [](const QString &text) {
+                    return makeSystemMessage(text);
+                },
+                [](Channel &chan,
+                   std::shared_ptr<const Message> message) -> void {
+                    chan.addMessage(message);
+                });
+        }
+        plugin->initialize();
+    });
 }
 
 Plugins::Plugins()

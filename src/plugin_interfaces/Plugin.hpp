@@ -14,6 +14,7 @@ namespace plugin_interfaces {
     public:
         virtual ~Plugin(){};
         virtual QString name() const = 0;
+        virtual void initialize(){};
     };
 
 }  // namespace plugin_interfaces

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ForwardDecl.hpp"
 #include "common/CompletionModel.hpp"
 #include "plugin_interfaces/Plugin.hpp"
 
@@ -24,8 +25,7 @@ namespace plugin_interfaces {
             std::function<void(const QString &str,
                                CompletionModel::TaggedString::Type type)>
                 addString,
-            const QString &prefix, bool isFirstWord,
-            const Channel &channel) = 0;
+            const QString &prefix, bool isFirstWord, Channel &channel) = 0;
     };
 
 }  // namespace plugin_interfaces
