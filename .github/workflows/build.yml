@@ -113,20 +113,38 @@ jobs:
             }
         shell: powershell
 
+      - name: Build plugins with QMake (Windows)
+        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'qmake'
+        run: |
+            $plugins = Get-ChildItem plugins
+            cd plugins
+            foreach($dir in $plugins) {
+              cd $dir
+              mkdir build
+              cd build
+              qmake ..
+              nmake /S /NOLOGO
+              cd ..
+            }
+        shell: powershell
+
 
       - name: Build with CMake (Windows)
         if: startsWith(matrix.os, 'windows') && matrix.build-system == 'cmake'
         run: |
-            mkdir build
-            cd build
-            conan install ..
-            cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DUSE_CONAN=ON ..
-            set cl=/MP
-            nmake /S /NOLOGO
-            windeployqt bin/chatterino.exe --release --no-compiler-runtime --no-translations --no-opengl-sw --dir Chatterino2/
-            cp bin/chatterino.exe Chatterino2/
-            echo nightly > Chatterino2/modes
-            7z a chatterino-windows-x86-64.zip Chatterino2/
+            $plugins = Get-ChildItem plugins
+            cd plugins
+            foreach($dir in $plugins) {
+              cd $dir
+              mkdir build
+              cd build
+              conan install ..
+              cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DUSE_CONAN=ON ..
+              set cl=/MP
+              nmake /S /NOLOGO
+              cd ..
+            }
+        shell: powershell
 
       - name: Upload artifact (Windows)
         if: startsWith(matrix.os, 'windows')
@@ -185,6 +203,14 @@ jobs:
             cd build
             cmake -DCMAKE_INSTALL_PREFIX=appdir/usr/ -DCMAKE_BUILD_TYPE=Release -DPAJLADA_SETTINGS_USE_BOOST_FILESYSTEM=On ..
             make -j8
+        shell: bash
+
+      - name: Build plugins with CMake (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu') && matrix.build-system == 'cmake'
+        run: |
+            cd plugins
+            for i in *; do cd $i; mkdir build && cd build && cmake .. && make -j8; cd ..; done
+            cd ..
         shell: bash
 
       - name: Build plugins with QMake (Ubuntu)
@@ -264,6 +290,14 @@ jobs:
                 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
                 ..
             make -j8
+        shell: bash
+
+      - name: Build plugins with CMake (MacOS)
+        if: startsWith(matrix.os, 'macos') && matrix.build-system == 'qmake'
+        run: |
+            cd plugins
+            for i in *; do mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl .. && make -j8; cd ..; done
+            cd ..
         shell: bash
 
       - name: Package (MacOS)
