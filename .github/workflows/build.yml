@@ -157,7 +157,7 @@ jobs:
         if: startsWith(matrix.os, 'windows')
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: chatterino_plugins-windows-x86-64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
+          name: plugins-windows-x86-64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
           path: plugins/built/*
 
       # LINUX
@@ -239,7 +239,7 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: Chatterino_plugins-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
+          name: plugins-ubuntu-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
           path: plugins/built/*
 
       - name: Upload artifact - AppImage (Ubuntu)
@@ -314,7 +314,7 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: Chatterino_plugins-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
+          name: plugins-macos-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
           path: plugins/built/*
 
       - name: Upload artifact (MacOS)
