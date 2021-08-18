@@ -138,8 +138,7 @@ jobs:
               cd $dir
               mkdir build
               cd build
-              conan install ..
-              cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DUSE_CONAN=ON ..
+              cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release ..
               set cl=/MP
               nmake /S /NOLOGO
               cd ..
