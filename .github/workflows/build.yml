@@ -97,12 +97,21 @@ jobs:
             cp release/chatterino.exe Chatterino2/
             echo nightly > Chatterino2/modes
             7z a chatterino-windows-x86-64.zip Chatterino2/
+
       - name: Build plugins with QMake (Windows)
         if: startsWith(matrix.os, 'windows') && matrix.build-system == 'qmake'
         run: |
+            $plugins = Get-ChildItem plugins
             cd plugins
-            for i in *; do cd $i; mkdir build && cd build && qmake .. && cl=/MP nmake /S /NOLOGO; cd ..; done
-        shell: bash
+            foreach($dir in $plugins) {
+              cd $dir
+              mkdir build
+              cd build
+              qmake ..
+              nmake /S /NOLOGO
+              cd ..
+            }
+        shell: powershell
 
 
       - name: Build with CMake (Windows)
