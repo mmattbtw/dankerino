@@ -243,7 +243,7 @@ jobs:
         if: startsWith(matrix.os, 'macos') && matrix.build-system == 'qmake'
         run: |
             cd plugins
-            for i in *; mkdir build && cd build && $Qt5_DIR/bin/qmake .. DEFINES+=$dateOfBuild && make -j8; cd ..; done
+            for i in *; do mkdir build && cd build && $Qt5_DIR/bin/qmake .. DEFINES+=$dateOfBuild && make -j8; cd ..; done
             cd ..
         shell: bash
 
