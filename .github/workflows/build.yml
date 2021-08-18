@@ -132,7 +132,7 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:
           name: chatterino_plugins-windows-x86-64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
-          path: build/chatterino-windows-x86-64.zip
+          path: plugins/built/*
 
       # LINUX
       - name: Install dependencies (Ubuntu)
