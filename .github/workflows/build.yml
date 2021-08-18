@@ -113,21 +113,6 @@ jobs:
             }
         shell: powershell
 
-      - name: Build plugins with CMake (Windows)
-        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'cmake'
-        run: |
-            $plugins = Get-ChildItem plugins
-            cd plugins
-            foreach($dir in $plugins) {
-              cd $dir
-              mkdir build
-              cd build
-              qmake ..
-              nmake /S /NOLOGO
-              cd ..
-            }
-        shell: powershell
-
 
       - name: Build with CMake (Windows)
         if: startsWith(matrix.os, 'windows') && matrix.build-system == 'cmake'
@@ -138,8 +123,24 @@ jobs:
               cd $dir
               mkdir build
               cd build
-              cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+              conan install ..
+              cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DUSE_CONAN=ON ..
               set cl=/MP
+              nmake /S /NOLOGO
+              cd ..
+            }
+        shell: powershell
+
+      - name: Build plugins with CMake (Windows)
+        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'cmake'
+        run: |
+            $plugins = Get-ChildItem plugins
+            cd plugins
+            foreach($dir in $plugins) {
+              cd $dir
+              mkdir build
+              cd build
+              cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release ..
               nmake /S /NOLOGO
               cd ..
             }
