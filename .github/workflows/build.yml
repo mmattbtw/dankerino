@@ -113,8 +113,8 @@ jobs:
             }
         shell: powershell
 
-      - name: Build plugins with QMake (Windows)
-        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'qmake'
+      - name: Build plugins with CMake (Windows)
+        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'cmake'
         run: |
             $plugins = Get-ChildItem plugins
             cd plugins
