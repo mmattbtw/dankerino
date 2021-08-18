@@ -239,6 +239,14 @@ jobs:
             make -j8
         shell: bash
 
+      - name: Build plugins with QMake (MacOS)
+        if: startsWith(matrix.os, 'macos') && matrix.build-system == 'qmake'
+        run: |
+            cd plugins
+            for i in *; mkdir build && cd build && $Qt5_DIR/bin/qmake .. DEFINES+=$dateOfBuild && make -j8; cd ..; done
+            cd ..
+        shell: bash
+
       - name: Build with CMake (MacOS)
         if: startsWith(matrix.os, 'macos') && matrix.build-system == 'cmake'
         run: |
@@ -260,6 +268,13 @@ jobs:
             cd build
             sh ./../.CI/CreateDMG.sh
         shell: bash
+
+      - name: Upload artifact - plugins.zip (MacOS)
+        if: startsWith(matrix.os, 'macos')
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: Chatterino_plugins-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
+          path: plugins/built/*
 
       - name: Upload artifact (MacOS)
         if: startsWith(matrix.os, 'macos')
