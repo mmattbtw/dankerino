@@ -14,7 +14,7 @@ Q_LOGGING_CATEGORY(supibotCompletionPlugin, "plugin.supibotCompletion",
                    QtDebugMsg);
 
 const QString completionsUnavailable =
-    "Completions for Supibot commands are unavailable%1";
+    "Completions for Supibot commands are unavailable";
 
 struct SupibotCommand {
     const int id;
@@ -156,7 +156,9 @@ public:
                     addString("$" + completion,
                               CompletionModel::TaggedString::Command);
                 }
-            } else {
+            }
+            else
+            {
                 // pipe and shit
                 for (const QString completion : this->commands_)
                 {
