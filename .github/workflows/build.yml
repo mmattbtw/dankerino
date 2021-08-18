@@ -100,6 +100,7 @@ jobs:
       - name: Build plugins with QMake (Windows)
         if: startsWith(matrix.os, 'windows') && matrix.build-system == 'qmake'
         run: |
+            tree
             cd plugins
             for i in *; do cd $i; mkdir build && cd build && qmake .. && cl=/MP nmake /S /NOLOGO; cd ..; done
             tree
