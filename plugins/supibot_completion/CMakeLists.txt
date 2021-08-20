@@ -29,7 +29,3 @@ target_link_libraries(supibot_completion
         )
 target_compile_options(supibot_completion PRIVATE ${COMPILE_OPTIONS})
 
-#add_executable(test-plugin-exec main.cpp)
-#target_link_libraries(test-plugin-exec PRIVATE Qt5::Widgets)
-#target_compile_options(test-plugin-exec PRIVATE ${COMPILE_OPTIONS})
-
