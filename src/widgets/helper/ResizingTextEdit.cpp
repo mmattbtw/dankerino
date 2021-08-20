@@ -137,7 +137,7 @@ void ResizingTextEdit::keyPressEvent(QKeyEvent *event)
             // completion model
             this->completer_->setModel(completionModel);
             completionModel->refresh(currentCompletionPrefix,
-                                     this->isFirstWord());
+                                     this->toPlainText(), this->isFirstWord());
             this->completionInProgress_ = true;
             this->completer_->setCompletionPrefix(currentCompletionPrefix);
             this->completer_->complete();

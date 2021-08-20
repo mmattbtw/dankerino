@@ -25,7 +25,8 @@ namespace plugin_interfaces {
             std::function<void(const QString &str,
                                CompletionModel::TaggedString::Type type)>
                 addString,
-            const QString &prefix, bool isFirstWord, Channel &channel) = 0;
+            const QString &prefix, const QString &message, bool isFirstWord,
+            Channel &channel) = 0;
     };
 
 }  // namespace plugin_interfaces

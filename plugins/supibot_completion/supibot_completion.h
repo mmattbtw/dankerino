@@ -42,6 +42,12 @@ struct SupibotCommandResponse {
     }
 };
 
+enum CompletionAdditionOption {
+    NO = 0,
+    YES_INCLUDE_OTHERS,
+    YES_EXCLUDE_OTHERS
+};
+
 class SupibotCompletionPlugin : public QObject,
                                 public plugin_interfaces::CompleterPlugin,
                                 public plugin_interfaces::Plugin,
@@ -95,6 +101,46 @@ private:
     }
     QString command_fetch_err_;
 
+    CompletionAdditionOption shouldAddNoPrefixCompletions(QString message)
+    {
+        if (!message.startsWith("$"))
+        {
+            qCDebug(supibotCompletionPlugin) << "skipping adding completions with no prefix: message doesn't start with prefix";
+            return CompletionAdditionOption::NO;
+        }
+        if (message.startsWith("$ "))
+        {
+            qCDebug(supibotCompletionPlugin) << "message starts with prefix, space" << message;
+            if (message.count(' ') == 1) {
+                return CompletionAdditionOption::YES_EXCLUDE_OTHERS; // handle completions just after a prefix with a space
+            }
+            message.replace("$ ", "$");  // account for prefix then space
+        }
+
+        if (message.startsWith("$pipe"))
+        {
+            qCDebug(supibotCompletionPlugin) << "message is a pipe call";
+            return CompletionAdditionOption::YES_INCLUDE_OTHERS;
+        }
+
+        if (message.startsWith("$alias "))
+        {
+            // sub command hell
+            message.replace("$alias ", "");
+            if (message.startsWith("add ") || message.startsWith("addedit") ||
+                message.startsWith("upsert ") || message.startsWith("edit "))
+            {
+            qCDebug(supibotCompletionPlugin) << "message is an alias (...) command call";
+            if (message.count(' ') == 2) { // add xd COMMAND
+                return CompletionAdditionOption::YES_EXCLUDE_OTHERS; // handle completions just after a prefix with a space
+            } else {
+                return CompletionAdditionOption::YES_INCLUDE_OTHERS;
+            }
+            }
+        }
+        return CompletionAdditionOption::NO;
+    }
+
 public:
     void initialize() override
     {
@@ -122,8 +168,8 @@ public:
     bool refresh(std::function<void(const QString &str,
                                     CompletionModel::TaggedString::Type type)>
                      addString,
-                 const QString &prefix, bool isFirstWord,
-                 Channel &channel) override
+                 const QString &prefix, const QString &message,
+                 bool isFirstWord, Channel &channel) override
     {
         qCDebug(supibotCompletionPlugin) << "Completions?";
         if (this->commands_.empty())
@@ -149,15 +195,17 @@ public:
         }
         else
         {
-            if (isFirstWord)
+            CompletionAdditionOption opt;
+            if (isFirstWord && message.startsWith("$"))
             {
                 for (const QString completion : this->commands_)
                 {
                     addString("$" + completion,
                               CompletionModel::TaggedString::Command);
                 }
+                    return false;
             }
-            else
+            else if ((opt = this->shouldAddNoPrefixCompletions(message)) != CompletionAdditionOption::NO)
             {
                 // pipe and shit
                 for (const QString completion : this->commands_)
@@ -165,9 +213,12 @@ public:
                     addString(completion,
                               CompletionModel::TaggedString::Command);
                 }
+                if (opt == CompletionAdditionOption::YES_EXCLUDE_OTHERS) {
+                    return false;
+                }
             }
         }
-        return false;
+        return true;
     };
 
     // plugin

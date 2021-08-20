@@ -50,7 +50,8 @@ public:
     virtual QVariant data(const QModelIndex &index, int) const override;
     virtual int rowCount(const QModelIndex &) const override;
 
-    void refresh(const QString &prefix, bool isFirstWord = false);
+    void refresh(const QString &prefix, const QString &message,
+                 bool isFirstWord = false);
 
     static bool compareStrings(const QString &a, const QString &b);
 

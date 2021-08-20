@@ -75,7 +75,8 @@ int CompletionModel::rowCount(const QModelIndex &) const
     return this->items_.size();
 }
 
-void CompletionModel::refresh(const QString &prefix, bool isFirstWord)
+void CompletionModel::refresh(const QString &prefix, const QString &message,
+                              bool isFirstWord)
 {
     std::lock_guard<std::mutex> guard(this->itemsMutex_);
     this->items_.clear();
@@ -94,17 +95,28 @@ void CompletionModel::refresh(const QString &prefix, bool isFirstWord)
                 this->items_.emplace(str + " ", type);
         };
     }
+    auto addMoreCompletions = true;
     getApp()->plugins->forEachPlugin(
-        [addString, prefix, isFirstWord,
+        [addString, prefix, isFirstWord, message, &addMoreCompletions,
          &channel = this->channel_](plugin_interfaces::Plugin *plugin) {
+            if (!addMoreCompletions)
+            {
+                return;
+            }
             auto completer =
                 dynamic_cast<plugin_interfaces::CompleterPlugin *>(plugin);
             if (completer)
             {
                 qDebug() << "adding completions from" << plugin->name();
-                completer->refresh(addString, prefix, isFirstWord, channel);
+                addMoreCompletions = completer->refresh(
+                    addString, prefix, message, isFirstWord, channel);
             }
         });
+
+    if (!addMoreCompletions)
+    {
+        return;
+    }
 
     if (prefix.length() < 2 || !this->channel_.isTwitchChannel())
     {
