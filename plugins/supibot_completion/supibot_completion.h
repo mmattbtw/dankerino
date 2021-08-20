@@ -9,6 +9,8 @@ using namespace chatterino;
 
 namespace supibot_completion {
 
+const QString VERSION = "1.0";
+
 Q_DECLARE_LOGGING_CATEGORY(supibotCompletionPlugin);
 Q_LOGGING_CATEGORY(supibotCompletionPlugin, "plugin.supibotCompletion",
                    QtDebugMsg);
@@ -224,7 +226,7 @@ public:
     // plugin
     QString name() const override
     {
-        return "Supibot command completion";
+        return "Supibot command completion v" + VERSION;
     };
 };
 
