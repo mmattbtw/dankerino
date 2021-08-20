@@ -1,1 +1,9 @@
-To compile, clone repo into your chatterino directory and cd into it and run `mkdir build && cd build && qmake .. && make -j$(nproc)`
+Compile:
+
+## With QMake
+
+`qmake .. && make -j$(nproc)`
+
+## With CMake
+
+`cmake .. && make -j$(nproc)`
