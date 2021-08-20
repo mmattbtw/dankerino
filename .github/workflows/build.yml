@@ -182,8 +182,7 @@ jobs:
                 libxcb-keysyms1 \
                 libxcb-render-util0 \
                 libxcb-xinerama0 \
-                libxcb-randr0 \
-                zip
+                libxcb-randr0
 
       - name: Build (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu') && matrix.build-system == 'qmake'
