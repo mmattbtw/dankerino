@@ -5,7 +5,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(MAJOR_QT_VERSION "5")
 
-#find_package(Qt5Widgets REQUIRED)
 find_package(Qt${MAJOR_QT_VERSION} REQUIRED
     COMPONENTS
     Core
