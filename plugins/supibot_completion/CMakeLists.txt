@@ -25,6 +25,7 @@ target_link_libraries(supibot_completion
         Qt${MAJOR_QT_VERSION}::Widgets
         Qt${MAJOR_QT_VERSION}::Network
         Qt${MAJOR_QT_VERSION}::Concurrent
+        RapidJSON::RapidJSON
         )
 target_compile_options(supibot_completion PRIVATE ${COMPILE_OPTIONS})
 
