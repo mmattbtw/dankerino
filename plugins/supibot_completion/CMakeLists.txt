@@ -12,6 +12,11 @@ find_package(Qt${MAJOR_QT_VERSION} REQUIRED
     Network
     Concurrent
     )
+list(APPEND CMAKE_MODULE_PATH
+    "${CMAKE_SOURCE_DIR}/../../cmake"
+    "${CMAKE_SOURCE_DIR}/../../cmake/sanitizers-cmake/cmake"
+    )
+
 find_package(REQUIRED RapidJSON)
 
 include_directories(../../src)
