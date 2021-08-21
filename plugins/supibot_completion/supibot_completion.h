@@ -4,6 +4,8 @@
 
 #include <plugin_interfaces/Completer.hpp>
 #include <plugin_interfaces/MessageCreator.hpp>
+#include <common/NetworkRequest.hpp>
+#include <common/Outcome.hpp>
 
 using namespace chatterino;
 
@@ -156,11 +158,10 @@ private:
 public:
     void initialize() override
     {
-        qCDebug(supibotCompletionPlugin) << "fetching supibot commands...";
-        this->fetch(
-            QUrl("https://supinic.com/api/bot/command/list"),
-            [this](QJsonObject root) {
-                SupibotCommandResponse res = root;
+        NetworkRequest(QUrl("https://supinic.com/api/bot/command/list"))
+            .onSuccess([this](NetworkResult result) {
+                SupibotCommandResponse res = result.parseJson();
+                qCDebug(supibotCompletionPlugin) << "Fetched" << res.data.size() << "Supibot commands";
                 for (const auto obj : res.data)
                 {
                     SupibotCommand cmd = obj.toObject();
@@ -171,10 +172,12 @@ public:
                         this->commands_.push_back(alias.toString());
                     }
                 }
-            },
-            [this](QNetworkReply *reply) {
-                this->command_fetch_err_ = reply->errorString();
-            });
+                return Success;
+            })
+            .onError([this](NetworkResult res) {
+                this->command_fetch_err_ = QString::number(res.status());
+            })
+            .execute();
     }
 
     bool refresh(std::function<void(const QString &str,
