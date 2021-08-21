@@ -17,7 +17,7 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/../../cmake/sanitizers-cmake/cmake"
     )
 
-find_package(REQUIRED RapidJSON)
+find_package(RapidJSON REQUIRED)
 
 include_directories(../../src)
 set(COMPILE_OPTIONS -std=c++17)
