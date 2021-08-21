@@ -47,7 +47,7 @@ CONFIG += c++17
 win32-msvc* {
     QMAKE_CXXFLAGS += /std:c++17
 } else {
-    QMAKE_CXXFLAGS += -std=c++17
+    QMAKE_CXXFLAGS += -std=c++17 -Wl,--export-dynamic
 }
 
 linux {
