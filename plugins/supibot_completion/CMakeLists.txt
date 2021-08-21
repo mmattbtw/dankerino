@@ -11,6 +11,7 @@ find_package(Qt${MAJOR_QT_VERSION} REQUIRED
     Widgets
     Network
     Concurrent
+    RapidJSON
     )
 
 include_directories(../../src)
