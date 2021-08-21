@@ -107,14 +107,19 @@ private:
     {
         if (!message.startsWith("$"))
         {
-            qCDebug(supibotCompletionPlugin) << "skipping adding completions with no prefix: message doesn't start with prefix";
+            qCDebug(supibotCompletionPlugin)
+                << "skipping adding completions with no prefix: message "
+                   "doesn't start with prefix";
             return CompletionAdditionOption::NO;
         }
         if (message.startsWith("$ "))
         {
-            qCDebug(supibotCompletionPlugin) << "message starts with prefix, space" << message;
-            if (message.count(' ') == 1) {
-                return CompletionAdditionOption::YES_EXCLUDE_OTHERS; // handle completions just after a prefix with a space
+            qCDebug(supibotCompletionPlugin)
+                << "message starts with prefix, space" << message;
+            if (message.count(' ') == 1)
+            {
+                return CompletionAdditionOption::
+                    YES_EXCLUDE_OTHERS;  // handle completions just after a prefix with a space
             }
             message.replace("$ ", "$");  // account for prefix then space
         }
@@ -132,12 +137,17 @@ private:
             if (message.startsWith("add ") || message.startsWith("addedit") ||
                 message.startsWith("upsert ") || message.startsWith("edit "))
             {
-            qCDebug(supibotCompletionPlugin) << "message is an alias (...) command call";
-            if (message.count(' ') == 2) { // add xd COMMAND
-                return CompletionAdditionOption::YES_EXCLUDE_OTHERS; // handle completions just after a prefix with a space
-            } else {
-                return CompletionAdditionOption::YES_INCLUDE_OTHERS;
-            }
+                qCDebug(supibotCompletionPlugin)
+                    << "message is an alias (...) command call";
+                if (message.count(' ') == 2)
+                {  // add xd COMMAND
+                    return CompletionAdditionOption::
+                        YES_EXCLUDE_OTHERS;  // handle completions just after a prefix with a space
+                }
+                else
+                {
+                    return CompletionAdditionOption::YES_INCLUDE_OTHERS;
+                }
             }
         }
         return CompletionAdditionOption::NO;
@@ -205,9 +215,10 @@ public:
                     addString("$" + completion,
                               CompletionModel::TaggedString::Command);
                 }
-                    return false;
+                return false;
             }
-            else if ((opt = this->shouldAddNoPrefixCompletions(message)) != CompletionAdditionOption::NO)
+            else if ((opt = this->shouldAddNoPrefixCompletions(message)) !=
+                     CompletionAdditionOption::NO)
             {
                 // pipe and shit
                 for (const QString completion : this->commands_)
@@ -215,7 +226,8 @@ public:
                     addString(completion,
                               CompletionModel::TaggedString::Command);
                 }
-                if (opt == CompletionAdditionOption::YES_EXCLUDE_OTHERS) {
+                if (opt == CompletionAdditionOption::YES_EXCLUDE_OTHERS)
+                {
                     return false;
                 }
             }
