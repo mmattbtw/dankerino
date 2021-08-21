@@ -11,8 +11,8 @@ find_package(Qt${MAJOR_QT_VERSION} REQUIRED
     Widgets
     Network
     Concurrent
-    RapidJSON
     )
+find_package(REQUIRED RapidJSON)
 
 include_directories(../../src)
 set(COMPILE_OPTIONS -std=c++17)
