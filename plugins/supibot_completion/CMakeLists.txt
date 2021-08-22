@@ -17,6 +17,8 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/../../cmake/sanitizers-cmake/cmake"
     )
 
+set(RapidJSON_INCLUDE_DIRS
+    "${CMAKE_SOURCE_DIR}/../../lib/rapidjson/")
 find_package(RapidJSON REQUIRED)
 
 include_directories(../../src)
