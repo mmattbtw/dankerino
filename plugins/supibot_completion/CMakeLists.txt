@@ -1,6 +1,9 @@
 project(supibot_completion)
 cmake_minimum_required(VERSION 3.2.0)
 
+option(USE_CONAN "Use conan" OFF)
+
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(MAJOR_QT_VERSION "5")
@@ -16,6 +19,11 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/../../cmake"
     "${CMAKE_SOURCE_DIR}/../../cmake/sanitizers-cmake/cmake"
     )
+
+if (USE_CONAN OR CONAN_EXPORTED)
+    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
+endif()
 
 find_package(RapidJSON REQUIRED)
 
