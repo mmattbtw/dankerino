@@ -35,5 +35,6 @@ target_link_libraries(supibot_completion
         Qt${MAJOR_QT_VERSION}::Concurrent
         RapidJSON::RapidJSON
         )
+target_include_directories(supibot_completion PUBLIC ${RapidJSON_INCLUDE_DIRS})
 target_compile_options(supibot_completion PRIVATE ${COMPILE_OPTIONS})
 
