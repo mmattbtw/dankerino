@@ -18,7 +18,7 @@ list(APPEND CMAKE_MODULE_PATH
     )
 
 set(RapidJSON_INCLUDE_DIRS
-    "${CMAKE_SOURCE_DIR}/../../lib/rapidjson/")
+    "${CMAKE_SOURCE_DIR}/../../lib/rapidjson/include/")
 find_package(RapidJSON REQUIRED)
 
 include_directories(../../src)
