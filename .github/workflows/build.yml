@@ -140,6 +140,7 @@ jobs:
               cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DUSE_CONAN=ON ..
               set cl=/MP
               nmake /S /NOLOGO
+              dir -R
               cd ..
             }
         shell: powershell
