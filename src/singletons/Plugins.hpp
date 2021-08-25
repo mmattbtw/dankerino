@@ -15,7 +15,6 @@ private:
     std::vector<plugin_interfaces::Plugin *> items_;
 
 public:
-    Plugins();
     void initialize(Settings &settings, Paths &paths) override;
 
     void forEachPlugin(

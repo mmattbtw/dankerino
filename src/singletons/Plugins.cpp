@@ -81,10 +81,6 @@ void Plugins::initialize(Settings &settings, Paths &paths)
     });
 }
 
-Plugins::Plugins()
-{
-}
-
 void Plugins::forEachPlugin(
     std::function<void(plugin_interfaces::Plugin *)> action)
 {
