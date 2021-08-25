@@ -140,9 +140,9 @@ private:
                 qCDebug(supibotCompletionPlugin)
                     << "message is an alias (...) command call";
                 if (message.count(' ') == 2)
-                {  // add xd COMMAND
-                    return CompletionAdditionOption::
-                        YES_EXCLUDE_OTHERS;  // handle completions just after a prefix with a space
+                {   // add xd COMMAND
+                    // handle completions just after a prefix with a space
+                    return CompletionAdditionOption::YES_EXCLUDE_OTHERS;
                 }
                 else
                 {
