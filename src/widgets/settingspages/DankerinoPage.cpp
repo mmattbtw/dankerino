@@ -6,6 +6,8 @@
 
 #include "Application.hpp"
 #include "common/Version.hpp"
+#include "plugin_interfaces/SettingsPlugin.hpp"
+#include "singletons/Plugins.hpp"
 #include "widgets/BaseWindow.hpp"
 #include "widgets/helper/Line.hpp"
 #include "widgets/settingspages/GeneralPageView.hpp"
@@ -64,9 +66,40 @@ void DankerinoPage::initLayout(GeneralPageView &layout)
         "can load arbitrary code into Chatterino,\nbe sure you trust "
         "their authors!",
         s.enablePlugins);
+    if (s.enablePlugins)
+    {
+        auto pluginsDisplay = new QGroupBox("Plugins loaded:");
+        layout.addWidget(pluginsDisplay);
+        {
+            auto list = new QVBoxLayout(pluginsDisplay);
+
+            getApp()->plugins->forEachPlugin(
+                [&list](plugin_interfaces::Plugin *plugin) {
+                    auto settings =
+                        dynamic_cast<plugin_interfaces::SettingsPlugin *>(
+                            plugin);
+                    if (settings)
+                    {
+                        auto label = new QLabel(plugin->name() +
+                                                " <a href=.>Open settings</a>");
+                        list->addWidget(label);
+                        QObject::connect(label, &QLabel::linkActivated,
+                                         [pl = settings]() {
+                                             pl->openSettings();
+                                         });
+                    }
+                    else
+                    {
+                        auto label = new QLabel(plugin->name());
+                        list->addWidget(label);
+                    }
+                });
+        }
+    }
 
     if (s.dankerinoThreeLetterApiEasterEgg)
     {
+        layout.addTitle("Advanced");
         layout.addCheckbox("Click to disable GraphQL easter egg and "
                            "advanced settings "
                            "(requires restart)",
