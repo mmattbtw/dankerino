@@ -140,7 +140,7 @@ jobs:
               cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DUSE_CONAN=ON ..
               set cl=/MP
               nmake /S /NOLOGO
-              dir -R
+              cp *.dll ../../built/
               cd ..
             }
         shell: powershell
@@ -273,7 +273,7 @@ jobs:
       - name: Build plugins with QMake (MacOS)
         if: startsWith(matrix.os, 'macos') && matrix.build-system == 'qmake'
         run: |
-            cd plugins; for i in *; do mkdir build && cd build && $Qt5_DIR/bin/qmake .. DEFINES+=$dateOfBuild && make -j8; cd ..; done
+            cd plugins; for i in *; do cd $i && mkdir build && cd build && $Qt5_DIR/bin/qmake .. DEFINES+=$dateOfBuild && make -j8; cd ..; done
             cd ..
         shell: bash
 
@@ -292,7 +292,7 @@ jobs:
       - name: Build plugins with CMake (MacOS)
         if: startsWith(matrix.os, 'macos') && matrix.build-system == 'cmake'
         run: |
-            cd plugins; for i in *; do mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl .. && make -j8; cd ..; done
+            cd plugins; for i in *; do cd $i && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl .. && make -j8; cd ..; done
             cd ..
         shell: bash
 
