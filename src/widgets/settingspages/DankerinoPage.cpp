@@ -58,6 +58,12 @@ void DankerinoPage::initLayout(GeneralPageView &layout)
     layout.addIntInput(
         "Low rate limit spam delay in milliseconds (non mod/vip)",
         s.twitchLowRateLimitDelay, 500, 3000, 1100);
+    layout.addCheckbox(
+        "Enable EXPERIMENTAL plugin support (requires restart).\nYour "
+        "chatterino might crash unexpectedly if you have plugins!\nPlugins "
+        "can load arbitrary code into Chatterino,\nbe sure you trust "
+        "their authors!",
+        s.enablePlugins);
 
     if (s.dankerinoThreeLetterApiEasterEgg)
     {
@@ -65,12 +71,6 @@ void DankerinoPage::initLayout(GeneralPageView &layout)
                            "advanced settings "
                            "(requires restart)",
                            s.dankerinoThreeLetterApiEasterEgg);
-        layout.addCheckbox(
-            "Enable EXPERIMENTAL plugin support (requires restart).\nYour "
-            "chatterino might crash unexpectedly if you have plugins!\nPlugins "
-            "can load arbitrary code into Chatterino,\nbe sure you trust "
-            "their authors!",
-            s.enablePlugins);
         layout.addTitle("Random 'hacks'");
         layout.addCheckbox("Enable. Required for settings below to work!",
                            s.nonceFuckeryEnabled);
