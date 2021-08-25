@@ -434,6 +434,10 @@ HEADERS += \
     src/messages/search/SubstringPredicate.hpp \
     src/messages/Selection.hpp \
     src/messages/SharedMessageBuilder.hpp \
+    src/plugin_interfaces/Completer.hpp \
+    src/plugin_interfaces/MessageCreator.hpp \
+    src/plugin_interfaces/Plugin.hpp \
+    src/plugin_interfaces/SettingsPlugin.hpp \
     src/PrecompiledHeader.hpp \
     src/providers/bttv/BttvEmotes.hpp \
     src/providers/bttv/LoadBttvChannelEmote.hpp \
@@ -611,10 +615,6 @@ HEADERS += \
     src/widgets/StreamView.hpp \
     src/widgets/TooltipWidget.hpp \
     src/widgets/Window.hpp \
-    src/plugin_interfaces/Completer.hpp \
-    src/plugin_interfaces/Plugin.hpp \
-    src/plugin_interfaces/MessageCreator.hpp \
-    src/plugin_interfaces/SettingsPlugin.hpp \
 
 RESOURCES += \
     resources/resources.qrc \
