@@ -3,9 +3,9 @@
 #include "messages/MessageBuilder.hpp"
 #include "singletons/Paths.hpp"
 
-// for side-effects
 #include "plugin_interfaces/Completer.hpp"
 #include "plugin_interfaces/MessageCreator.hpp"
+#include "plugin_interfaces/SettingsPlugin.hpp"
 
 #include <QPluginLoader>
 
@@ -45,18 +45,42 @@ void Plugins::initialize(Settings &settings, Paths &paths)
     }
     // initialize plugins!
     this->forEachPlugin([](plugin_interfaces::Plugin *plugin) {
-        auto pl =
-            dynamic_cast<plugin_interfaces::MessageCreatorPlugin *>(plugin);
-        if (pl)
         {
-            pl->setMessageCreationFunctionPointers(
-                [](const QString &text) {
-                    return makeSystemMessage(text);
-                },
-                [](Channel &chan,
-                   std::shared_ptr<const Message> message) -> void {
-                    chan.addMessage(message);
-                });
+            auto pl =
+                dynamic_cast<plugin_interfaces::MessageCreatorPlugin *>(plugin);
+            if (pl)
+            {
+                pl->setMessageCreationFunctionPointers(
+                    [](const QString &text) {
+                        return makeSystemMessage(text);
+                    },
+                    [](Channel &chan,
+                       std::shared_ptr<const Message> message) -> void {
+                        chan.addMessage(message);
+                    },
+                    [](Channel &chan) {
+                        return int(chan.getType());
+                    },
+                    [](Channel &chan) {
+                        return chan.getName();
+                    });
+            }
+        }
+        {
+            auto pl = dynamic_cast<plugin_interfaces::SettingsPlugin *>(plugin);
+            if (pl)
+            {
+                pl->setSettingsFunctionPointers(
+                    [](QString name, QString defaultValue) -> QString {
+                        auto val = pajlada::Settings::Setting<QString>::get(
+                            name.toStdString());
+                        return val.isNull() ? defaultValue : val;
+                    },
+                    [](QString name, QString value) -> void {
+                        pajlada::Settings::Setting<QString>::set(
+                            name.toStdString(), value);
+                    });
+            }
         }
         plugin->initialize();
     });

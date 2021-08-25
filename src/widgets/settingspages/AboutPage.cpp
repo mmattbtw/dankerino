@@ -3,6 +3,7 @@
 #include "common/Modes.hpp"
 #include "common/QLogging.hpp"
 #include "common/Version.hpp"
+#include "plugin_interfaces/SettingsPlugin.hpp"
 #include "singletons/Plugins.hpp"
 #include "util/LayoutCreator.hpp"
 #include "util/RemoveScrollAreaBackground.hpp"
@@ -172,7 +173,23 @@ AboutPage::AboutPage()
 
             getApp()->plugins->forEachPlugin(
                 [&list](plugin_interfaces::Plugin *plugin) {
-                    list.emplace<QLabel>(plugin->name());
+                    auto settings =
+                        dynamic_cast<plugin_interfaces::SettingsPlugin *>(
+                            plugin);
+                    if (settings)
+                    {
+                        auto label = list.emplace<QLabel>(
+                            plugin->name() + "<a href=.>open settings</a>");
+                        QObject::connect(label.getElement(),
+                                         &QLabel::linkActivated,
+                                         [pl = settings]() {
+                                             pl->openSettings();
+                                         });
+                    }
+                    else
+                    {
+                        list.emplace<QLabel>(plugin->name());
+                    }
                 });
         }
 

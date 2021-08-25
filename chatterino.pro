@@ -614,6 +614,7 @@ HEADERS += \
     src/plugin_interfaces/Completer.hpp \
     src/plugin_interfaces/Plugin.hpp \
     src/plugin_interfaces/MessageCreator.hpp \
+    src/plugin_interfaces/SettingsPlugin.hpp \
 
 RESOURCES += \
     resources/resources.qrc \
