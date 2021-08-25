@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.8)
 cmake_policy(SET CMP0087 NEW)
 include(FeatureSummary)
 
-#set(COMPILE_OPTIONS "-Wl,--export-dynamic")
 set(ENABLE_EXPORTS TRUE)
 
 list(APPEND CMAKE_MODULE_PATH
