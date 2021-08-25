@@ -30,17 +30,12 @@ void Plugins::initialize(Settings &settings, Paths &paths)
             auto pl = dynamic_cast<plugin_interfaces::Plugin *>(plugin);
             if (pl)
             {
-                qDebug() << "plugin!";
                 this->items_.push_back(pl);
-            }
-            else
-            {
-                qDebug() << "no plugin!";
             }
         }
         else
         {
-            qDebug() << "unable to load" << fileName << loader.errorString();
+            qWarning() << "unable to load" << fileName << loader.errorString();
         }
     }
     // initialize plugins!

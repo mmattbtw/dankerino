@@ -107,7 +107,6 @@ void CompletionModel::refresh(const QString &prefix, const QString &message,
                 dynamic_cast<plugin_interfaces::CompleterPlugin *>(plugin);
             if (completer)
             {
-                qDebug() << "adding completions from" << plugin->name();
                 addMoreCompletions = completer->refresh(
                     addString, prefix, message, isFirstWord, channel);
             }
