@@ -17,10 +17,6 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/../../cmake/sanitizers-cmake/cmake"
     )
 
-set(RapidJSON_INCLUDE_DIRS
-    "${CMAKE_SOURCE_DIR}/../../lib/rapidjson/include/")
-find_package(RapidJSON REQUIRED)
-
 include_directories(../../src)
 set(COMPILE_OPTIONS -std=c++17)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../../built/)
@@ -33,8 +29,6 @@ target_link_libraries(supibot_completion
         Qt${MAJOR_QT_VERSION}::Widgets
         Qt${MAJOR_QT_VERSION}::Network
         Qt${MAJOR_QT_VERSION}::Concurrent
-        RapidJSON::RapidJSON
         )
-target_include_directories(supibot_completion PUBLIC ${RapidJSON_INCLUDE_DIRS})
 target_compile_options(supibot_completion PRIVATE ${COMPILE_OPTIONS})
 
