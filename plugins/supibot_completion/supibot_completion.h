@@ -156,10 +156,12 @@ private:
 public:
     void initialize() override
     {
-        this->fetch(QUrl("https://supinic.com/api/bot/command/list"),
+        this->fetch(
+            QUrl("https://supinic.com/api/bot/command/list"),
             [this](QJsonObject result) {
                 SupibotCommandResponse res = result;
-                qCDebug(supibotCompletionPlugin) << "Fetched" << res.data.size() << "Supibot commands";
+                qCDebug(supibotCompletionPlugin)
+                    << "Fetched" << res.data.size() << "Supibot commands";
                 for (const auto obj : res.data)
                 {
                     SupibotCommand cmd = obj.toObject();
