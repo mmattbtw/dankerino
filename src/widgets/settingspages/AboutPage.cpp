@@ -179,7 +179,7 @@ AboutPage::AboutPage()
                     if (settings)
                     {
                         auto label = list.emplace<QLabel>(
-                            plugin->name() + "<a href=.>open settings</a>");
+                            plugin->name() + " <a href=.>Open settings</a>");
                         QObject::connect(label.getElement(),
                                          &QLabel::linkActivated,
                                          [pl = settings]() {
