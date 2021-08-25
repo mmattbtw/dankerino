@@ -93,7 +93,6 @@ private:
                 }
                 else
                 {
-                    qCDebug(supibotCompletionPlugin) << "downloaded?";
                     QJsonDocument jsonDoc(
                         QJsonDocument::fromJson(reply->readAll()));
                     onSuccess(jsonDoc.object());
@@ -107,15 +106,10 @@ private:
     {
         if (!message.startsWith("$"))
         {
-            qCDebug(supibotCompletionPlugin)
-                << "skipping adding completions with no prefix: message "
-                   "doesn't start with prefix";
             return CompletionAdditionOption::NO;
         }
         if (message.startsWith("$ "))
         {
-            qCDebug(supibotCompletionPlugin)
-                << "message starts with prefix, space" << message;
             if (message.count(' ') == 1)
             {
                 return CompletionAdditionOption::
@@ -126,7 +120,6 @@ private:
 
         if (message.startsWith("$pipe"))
         {
-            qCDebug(supibotCompletionPlugin) << "message is a pipe call";
             return CompletionAdditionOption::YES_INCLUDE_OTHERS;
         }
 
@@ -137,8 +130,6 @@ private:
             if (message.startsWith("add ") || message.startsWith("addedit") ||
                 message.startsWith("upsert ") || message.startsWith("edit "))
             {
-                qCDebug(supibotCompletionPlugin)
-                    << "message is an alias (...) command call";
                 if (message.count(' ') == 2)
                 {   // add xd COMMAND
                     // handle completions just after a prefix with a space
@@ -184,7 +175,6 @@ public:
                  const QString &prefix, const QString &message,
                  bool isFirstWord, Channel &channel) override
     {
-        qCDebug(supibotCompletionPlugin) << "Completions?";
         if (this->commands_.empty())
         {
             auto now = QDateTime::currentDateTime();
