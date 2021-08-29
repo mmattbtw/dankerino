@@ -14,6 +14,7 @@
 
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QGroupBox>
 
 namespace chatterino {
 

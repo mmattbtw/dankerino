@@ -7,6 +7,7 @@
 #include "plugin_interfaces/MessageCreator.hpp"
 #include "plugin_interfaces/SettingsPlugin.hpp"
 
+#include <QDir>
 #include <QPluginLoader>
 
 namespace chatterino {

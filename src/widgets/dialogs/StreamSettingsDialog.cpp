@@ -9,6 +9,8 @@
 #include "util/StandardItemHelper.hpp"
 #include "widgets/Window.hpp"
 
+#include <QMessageBox>
+
 namespace chatterino {
 using namespace std::chrono_literals;
 
