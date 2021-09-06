@@ -71,25 +71,19 @@ private:
         this->downloading_mutex_.lock();
         QTimer *timer = new QTimer(this);
         timer->setSingleShot(true);
-        timer->start(0);
+        timer->start(15000);
 
         QNetworkRequest req(url);
         QNetworkReply *reply = this->netmanager_.get(req);
 
         QObject::connect(timer, &QTimer::timeout, this, [reply]() {
-            qCDebug(supibotCompletionPlugin) << "I HAVE NO SOURCES 1";
             reply->abort();
         });
-        //QObject::connect(&this->netmanager_, &QNetworkAccessManager::finished,
-        //                 reply, &QNetworkReply::deleteLater);
-        QObject::connect(&this->netmanager_, &QNetworkAccessManager::finished, this, [reply]() {
-            qCDebug(supibotCompletionPlugin) << "I HAVE NO SOURCES 2";
-            reply->deleteLater();
-        });
+        QObject::connect(&this->netmanager_, &QNetworkAccessManager::finished,
+                         reply, &QNetworkReply::deleteLater);
         QObject::connect(
             &this->netmanager_, &QNetworkAccessManager::finished,
             [this, timer, onSuccess, onError](QNetworkReply *reply) {
-            qCDebug(supibotCompletionPlugin) << "I HAVE NO SOURCES 3";
                 timer->deleteLater();
                 if (reply->error())
                 {
