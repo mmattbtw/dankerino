@@ -76,7 +76,7 @@ private:
         QNetworkRequest req(url);
         QNetworkReply *reply = this->netmanager_.get(req);
 
-        QObject::connect(timer, &QTimer::timeout, this, [&reply]() {
+        QObject::connect(timer, &QTimer::timeout, this, [reply]() {
             qCDebug(supibotCompletionPlugin) << "I HAVE NO SOURCES 1";
             reply->abort();
         });
