@@ -16,6 +16,7 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/../../cmake"
     "${CMAKE_SOURCE_DIR}/../../cmake/sanitizers-cmake/cmake"
     )
+find_package(Sanitizers)
 
 include_directories(../../src)
 set(COMPILE_OPTIONS -std=c++17)
