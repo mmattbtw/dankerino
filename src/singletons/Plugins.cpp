@@ -1,5 +1,6 @@
 #include "singletons/Plugins.hpp"
 
+#include "common/QLogging.hpp"
 #include "messages/MessageBuilder.hpp"
 #include "singletons/Paths.hpp"
 
@@ -27,7 +28,7 @@ void Plugins::initialize(Settings &settings, Paths &paths)
         QObject *plugin = loader.instance();
         if (plugin)
         {
-            qDebug() << "Loaded" << fileName;
+            qCDebug(chatterinoPlugins) << "Loaded" << fileName;
             auto pl = dynamic_cast<plugin_interfaces::Plugin *>(plugin);
             if (pl)
             {
@@ -36,7 +37,8 @@ void Plugins::initialize(Settings &settings, Paths &paths)
         }
         else
         {
-            qWarning() << "unable to load" << fileName << loader.errorString();
+            qCWarning(chatterinoPlugins)
+                << "unable to load" << fileName << loader.errorString();
         }
     }
     // initialize plugins!
