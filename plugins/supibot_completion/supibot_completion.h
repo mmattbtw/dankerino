@@ -70,8 +70,8 @@ private:
     {
         this->downloading_mutex_.lock();
         QTimer *timer = new QTimer(this);
-        timer->start(5000);
         timer->setSingleShot(true);
+        timer->start(0);
 
         QNetworkRequest req(url);
         QNetworkReply *reply = this->netmanager_.get(req);
