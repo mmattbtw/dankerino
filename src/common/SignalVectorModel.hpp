@@ -460,26 +460,34 @@ private:
         return i;
     }
 
-    // returns the related index of the model
-    int getModelIndexFromVectorIndex(int index)
+protected:
+    const std::vector<Row> &rows() const
     {
-        int i = 0;
+        return this->rows_;
+    }
+
+public:
+    // returns the related index of the model
+    int getModelIndexFromVectorIndex(int vectorIndex)
+    {
+        int modelIndex = 0;
 
         for (auto &row : this->rows_)
         {
             if (row.isCustomRow)
             {
-                index++;
+                vectorIndex++;
             }
 
-            if (i == index)
+            if (modelIndex == vectorIndex)
             {
-                return i;
+                return modelIndex;
             }
-            i++;
+
+            modelIndex++;
         }
 
-        return i;
+        return modelIndex;
     }
 };
 

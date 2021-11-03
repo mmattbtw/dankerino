@@ -17,6 +17,7 @@
 
 ## 2.3.4
 
+- Major: Added customizable shortcuts. (#2340)
 - Minor: Added new search predicate to filter for messages matching a regex (#3282)
 - Minor: Add `{channel.name}`, `{channel.id}`, `{stream.game}`, `{stream.title}`, `{my.id}`, `{my.name}` placeholders for commands (#3155)
 - Minor: Remove TwitchEmotes.com attribution and the open/copy options when right-clicking a Twitch Emote. (#2214, #3136)
@@ -41,6 +42,7 @@
 - Minor: Ignore out of bounds check for tiling wms (#3270)
 - Minor: Added `flags.first_message` filter variable (#3292)
 - Minor: Removed duplicate setting for toggling `Channel Point Redeemed Message` highlights (#3296)
+- Minor: Clean up chat messages of special line characters prior to sending. (#3312)
 - Bugfix: Fixed colored usernames sometimes not working. (#3170)
 - Bugfix: Restored ability to send duplicate `/me` messages. (#3166)
 - Bugfix: Notifications for moderators about other moderators deleting messages can now be disabled. (#3121)
@@ -57,6 +59,9 @@
 - Bugfix: Fixed `QCharRef with an index pointing outside the valid range of a QString` warning that was emitted on every Tab press. (#3234)
 - Bugfix: Fixed being unable to disable `First Message` highlights (#3293)
 - Bugfix: Fixed `First Message` custom sound not persisting through restart. (#3303)
+- Bugfix: Fixed `First Message` scrollbar highlights not being disabled. (#3325)
+- Bugfix: Fixed underlying text from disabled emotes not being colorized properly. (#3333)
+- Dev: Add GitHub action to test builds without precompiled headers enabled. (#3327)
 - Dev: Renamed CMake's build option `USE_SYSTEM_QT5KEYCHAIN` to `USE_SYSTEM_QTKEYCHAIN`. (#3103)
 - Dev: Add benchmarks that can be compiled with the `BUILD_BENCHMARKS` CMake flag. Off by default. (#3038)
 - Major: Newly uploaded Twitch emotes are once again present in emote picker and can be autocompleted with Tab as well. (#2992)
