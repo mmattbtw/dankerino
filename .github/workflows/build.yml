@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - dankerino
+      - very_dank/hotkeys
   pull_request:
 
 jobs:
