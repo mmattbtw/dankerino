@@ -144,7 +144,7 @@ enum class MessageElementFlag : int64_t {
     OriginalLink = (1LL << 30),
 
     // ZeroWidthEmotes are emotes that are supposed to overlay over any pre-existing emotes
-    // e.g. BTTV's SoSnowy during christmas season
+    // e.g. BTTV's SoSnowy during christmas season or zerowidth 7TV emotes
     ZeroWidthEmote = (1LL << 31),
 
     // (1LL<<33) is used by BadgeDankerino
@@ -263,7 +263,8 @@ private:
 class EmoteElement : public MessageElement
 {
 public:
-    EmoteElement(const EmotePtr &data, MessageElementFlags flags_);
+    EmoteElement(const EmotePtr &data, MessageElementFlags flags_,
+                 const MessageColor &textElementColor = MessageColor::Text);
 
     void addToContainer(MessageLayoutContainer &container,
                         MessageElementFlags flags_) override;
@@ -355,36 +356,6 @@ public:
 
     void addToContainer(MessageLayoutContainer &container,
                         MessageElementFlags flags) override;
-};
-
-// contains a full message string that's split into words on space and parses irc colors that are then put into segments
-// these segments are later passed to "MultiColorTextLayoutElement" elements to be rendered :)
-class IrcTextElement : public MessageElement
-{
-public:
-    IrcTextElement(const QString &text, MessageElementFlags flags,
-                   FontStyle style = FontStyle::ChatMedium);
-    ~IrcTextElement() override = default;
-
-    void addToContainer(MessageLayoutContainer &container,
-                        MessageElementFlags flags) override;
-
-private:
-    FontStyle style_;
-
-    struct Segment {
-        QString text;
-        int fg = -1;
-        int bg = -1;
-    };
-
-    struct Word {
-        QString text;
-        int width = -1;
-        std::vector<Segment> segments;
-    };
-
-    std::vector<Word> words_;
 };
 
 // Forces a linebreak

@@ -114,12 +114,8 @@ void SharedMessageBuilder::parseUsernameColor()
 {
     if (getSettings()->colorizeNicknames)
     {
-        this->setRandomUsernameColor();
+        this->usernameColor_ = getRandomColor(this->ircMessage->nick());
     }
-}
-void SharedMessageBuilder::setRandomUsernameColor()
-{
-    this->usernameColor_ = getRandomColor(this->ircMessage->nick());
 }
 
 void SharedMessageBuilder::parseUsername()
@@ -134,6 +130,7 @@ void SharedMessageBuilder::parseHighlights()
 {
     auto app = getApp();
 
+    // Highlight because it's a subscription
     if (this->message().flags.has(MessageFlag::Subscription) &&
         getSettings()->enableSubHighlight)
     {

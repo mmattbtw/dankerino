@@ -28,6 +28,8 @@ ContextMap buildContextMap(const MessagePtr &m, chatterino::Channel *channel)
      * flags.points_redeemed
      * flags.sub_message
      * flags.system_message
+     * flags.reward_message
+     * flags.first_message
      * flags.whisper
      *
      * message.content
@@ -83,6 +85,9 @@ ContextMap buildContextMap(const MessagePtr &m, chatterino::Channel *channel)
         {"flags.sub_message", m->flags.has(MessageFlag::Subscription)},
         {"flags.system_message", m->flags.has(MessageFlag::System)},
         {"flags.webchat_detected", m->flags.has(MessageFlag::WebchatDetected)},
+        {"flags.reward_message",
+         m->flags.has(MessageFlag::RedeemedChannelPointReward)},
+        {"flags.first_message", m->flags.has(MessageFlag::FirstMessage)},
         {"flags.whisper", m->flags.has(MessageFlag::Whisper)},
 
         {"message.content", m->messageText},

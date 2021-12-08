@@ -1,5 +1,5 @@
 #include "StreamSettingsDialog.hpp"
-#include <chrono>
+
 #include "Application.hpp"
 #include "common/QLogging.hpp"
 #include "providers/twitch/TwitchChannel.hpp"
@@ -10,6 +10,7 @@
 #include "widgets/Window.hpp"
 
 #include <QMessageBox>
+#include <chrono>
 
 namespace chatterino {
 using namespace std::chrono_literals;
