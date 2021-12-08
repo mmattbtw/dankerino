@@ -99,6 +99,7 @@ include(lib/lrucache.pri)
 include(lib/winsdk.pri)
 include(lib/rapidjson.pri)
 include(lib/qtkeychain.pri)
+include(lib/chaiscript.pri)
 
 exists( $$OUT_PWD/conanbuildinfo.pri ) {
     message("Using conan packages")
@@ -239,6 +240,7 @@ SOURCES += \
     src/singletons/NativeMessaging.cpp \
     src/singletons/Paths.cpp \
     src/singletons/Plugins.cpp \
+    src/plugin_interfaces/Plugin.cpp \
     src/singletons/Resources.cpp \
     src/singletons/Settings.cpp \
     src/singletons/Theme.cpp \

@@ -96,6 +96,7 @@ void CompletionModel::refresh(const QString &prefix, const QString &message,
         };
     }
     auto addMoreCompletions = true;
+    /*
     getApp()->plugins->forEachPlugin(
         [addString, prefix, isFirstWord, message, &addMoreCompletions,
          &channel = this->channel_](plugin_interfaces::Plugin *plugin) {
@@ -111,6 +112,7 @@ void CompletionModel::refresh(const QString &prefix, const QString &message,
                     addString, prefix, message, isFirstWord, channel);
             }
         });
+        */
 
     if (!addMoreCompletions)
     {

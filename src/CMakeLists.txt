@@ -214,10 +214,8 @@ set(SOURCE_FILES
         providers/irc/IrcServer.cpp
         providers/irc/IrcServer.hpp
 
-        plugin_interfaces/Completer.hpp
-        plugin_interfaces/MessageCreator.hpp
         plugin_interfaces/Plugin.hpp
-        plugin_interfaces/SettingsPlugin.hpp
+        plugin_interfaces/Plugin.cpp
 
         providers/twitch/ChannelPointReward.cpp
         providers/twitch/ChannelPointReward.hpp
@@ -531,7 +529,9 @@ target_link_libraries(${LIBRARY_PROJECT}
         Threads::Threads
         RapidJSON::RapidJSON
         LRUCache
+        ChaiScript
         )
+
 if (BUILD_WITH_QTKEYCHAIN)
     target_link_libraries(${LIBRARY_PROJECT}
             PUBLIC
@@ -623,6 +623,7 @@ target_compile_definitions(${LIBRARY_PROJECT} PUBLIC
     CHATTERINO_GIT_HASH=\"${GIT_HASH}\"
     CHATTERINO_GIT_RELEASE=\"${GIT_RELEASE}\"
     CHATTERINO_GIT_COMMIT=\"${GIT_COMMIT}\"
+    -DCHAISCRIPT_NO_DYNLOAD
     )
 if (USE_SYSTEM_QTKEYCHAIN)
     target_compile_definitions(${LIBRARY_PROJECT} PUBLIC

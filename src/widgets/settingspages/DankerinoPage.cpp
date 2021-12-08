@@ -6,7 +6,7 @@
 
 #include "Application.hpp"
 #include "common/Version.hpp"
-#include "plugin_interfaces/SettingsPlugin.hpp"
+//#include "plugin_interfaces/SettingsPlugin.hpp"
 #include "singletons/Plugins.hpp"
 #include "widgets/BaseWindow.hpp"
 #include "widgets/helper/Line.hpp"
@@ -73,7 +73,7 @@ void DankerinoPage::initLayout(GeneralPageView &layout)
         layout.addWidget(pluginsDisplay);
         {
             auto list = new QVBoxLayout(pluginsDisplay);
-
+            /*
             getApp()->plugins->forEachPlugin(
                 [&list](plugin_interfaces::Plugin *plugin) {
                     auto settings =
@@ -95,6 +95,7 @@ void DankerinoPage::initLayout(GeneralPageView &layout)
                         list->addWidget(label);
                     }
                 });
+                */
         }
     }
 
