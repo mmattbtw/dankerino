@@ -105,66 +105,12 @@ jobs:
             echo nightly > Chatterino2/modes
             7z a chatterino-windows-x86-64.zip Chatterino2/
 
-      - name: Build plugins with QMake (Windows)
-        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'qmake'
-        run: |
-            $plugins = Get-ChildItem plugins
-            cd plugins
-            foreach($dir in $plugins) {
-              cd $dir
-              mkdir build
-              cd build
-              qmake ..
-              nmake /S /NOLOGO
-              cd ..
-            }
-        shell: powershell
-
-      - name: Build with CMake (Windows)
-        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'cmake'
-        run: |
-            mkdir build
-            cd build
-            conan install ..
-            cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DUSE_CONAN=ON ..
-            set cl=/MP
-            nmake /S /NOLOGO
-            windeployqt bin/chatterino.exe --release --no-compiler-runtime --no-translations --no-opengl-sw --dir Chatterino2/
-            cp bin/chatterino.exe Chatterino2/
-            echo nightly > Chatterino2/modes
-            7z a chatterino-windows-x86-64.zip Chatterino2/
-
-      - name: Build plugins with CMake (Windows)
-        if: startsWith(matrix.os, 'windows') && matrix.build-system == 'cmake'
-        run: |
-            $plugins = Get-ChildItem plugins
-            cd plugins
-            foreach($dir in $plugins) {
-              cd $dir
-              mkdir build
-              cd build
-              conan install ..
-              cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DUSE_CONAN=ON ..
-              set cl=/MP
-              nmake /S /NOLOGO
-              cp *.dll ../../built/
-              cd ..
-            }
-        shell: powershell
-
       - name: Upload artifact (Windows)
         if: startsWith(matrix.os, 'windows')
         uses: actions/upload-artifact@v2.2.4
         with:
           name: chatterino-windows-x86-64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
           path: build/chatterino-windows-x86-64.zip
-
-      - name: Upload artifact - plugins.zip (Windows)
-        if: startsWith(matrix.os, 'windows')
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: plugins-windows-x86-64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
-          path: plugins/built/*
 
       # LINUX
       - name: Install dependencies (Ubuntu)
@@ -215,22 +161,6 @@ jobs:
             make -j8
         shell: bash
 
-      - name: Build plugins with CMake (Ubuntu)
-        if: startsWith(matrix.os, 'ubuntu') && matrix.build-system == 'cmake'
-        run: |
-            cd plugins
-            for i in *; do cd $i; mkdir build && cd build && cmake .. && make -j8; cd ..; done
-            cd ..
-        shell: bash
-
-      - name: Build plugins with QMake (Ubuntu)
-        if: startsWith(matrix.os, 'ubuntu') && matrix.build-system == 'qmake'
-        run: |
-            cd plugins
-            for i in *; do cd $i; mkdir build && cd build && qmake .. && make -j8; cd ..; done
-            cd ..
-        shell: bash
-
       - name: Package - AppImage (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -244,13 +174,6 @@ jobs:
             cd build
             sh ./../.CI/CreateUbuntuDeb.sh
         shell: bash
-
-      - name: Upload artifact - plugins.zip (Ubuntu)
-        if: startsWith(matrix.os, 'ubuntu')
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: plugins-ubuntu-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
-          path: plugins/built/*
 
       - name: Upload artifact - AppImage (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
@@ -282,13 +205,6 @@ jobs:
             make -j8
         shell: bash
 
-      - name: Build plugins with QMake (MacOS)
-        if: startsWith(matrix.os, 'macos') && matrix.build-system == 'qmake'
-        run: |
-            cd plugins; for i in *; do cd $i && mkdir build && cd build && $Qt5_DIR/bin/qmake .. DEFINES+=$dateOfBuild && make -j8; cd ..; done
-            cd ..
-        shell: bash
-
       - name: Build with CMake (MacOS)
         if: startsWith(matrix.os, 'macos') && matrix.build-system == 'cmake'
         run: |
@@ -302,13 +218,6 @@ jobs:
             make -j8
         shell: bash
 
-      - name: Build plugins with CMake (MacOS)
-        if: startsWith(matrix.os, 'macos') && matrix.build-system == 'cmake'
-        run: |
-            cd plugins; for i in *; do cd $i && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl .. && make -j8; cd ..; done
-            cd ..
-        shell: bash
-
       - name: Package (MacOS)
         if: startsWith(matrix.os, 'macos')
         run: |
@@ -318,13 +227,6 @@ jobs:
             cd build
             sh ./../.CI/CreateDMG.sh
         shell: bash
-
-      - name: Upload artifact - plugins.zip (MacOS)
-        if: startsWith(matrix.os, 'macos')
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: plugins-macos-x86_64-${{ matrix.qt-version }}-${{ matrix.build-system }}.zip
-          path: plugins/built/*
 
       - name: Upload artifact (MacOS)
         if: startsWith(matrix.os, 'macos')
