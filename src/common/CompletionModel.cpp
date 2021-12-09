@@ -14,8 +14,6 @@
 #include "util/Helpers.hpp"
 #include "util/QStringHash.hpp"
 
-#include "plugin_interfaces/Completer.hpp"
-
 #include <QtAlgorithms>
 #include <utility>
 
@@ -96,23 +94,17 @@ void CompletionModel::refresh(const QString &prefix, const QString &message,
         };
     }
     auto addMoreCompletions = true;
-    /*
     getApp()->plugins->forEachPlugin(
         [addString, prefix, isFirstWord, message, &addMoreCompletions,
-         &channel = this->channel_](plugin_interfaces::Plugin *plugin) {
+         &channel = this->channel_](
+            std::shared_ptr<plugin_interfaces::Plugin> plugin) {
             if (!addMoreCompletions)
             {
                 return;
             }
-            auto completer =
-                dynamic_cast<plugin_interfaces::CompleterPlugin *>(plugin);
-            if (completer)
-            {
-                addMoreCompletions = completer->refresh(
-                    addString, prefix, message, isFirstWord, channel);
-            }
+            addMoreCompletions = plugin->refreshCustomCompletions(
+                addString, prefix, message, isFirstWord, channel);
         });
-        */
 
     if (!addMoreCompletions)
     {

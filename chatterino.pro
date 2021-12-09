@@ -193,6 +193,8 @@ SOURCES += \
     src/messages/search/RegexPredicate.cpp \
     src/messages/search/SubstringPredicate.cpp \
     src/messages/SharedMessageBuilder.cpp \
+    src/plugin_interfaces/API.cpp \
+    src/plugin_interfaces/Plugin.cpp \
     src/providers/bttv/BttvEmotes.cpp \
     src/providers/bttv/LoadBttvChannelEmote.cpp \
     src/providers/chatterino/ChatterinoBadges.cpp \
@@ -240,7 +242,6 @@ SOURCES += \
     src/singletons/NativeMessaging.cpp \
     src/singletons/Paths.cpp \
     src/singletons/Plugins.cpp \
-    src/plugin_interfaces/Plugin.cpp \
     src/singletons/Resources.cpp \
     src/singletons/Settings.cpp \
     src/singletons/Theme.cpp \
@@ -444,10 +445,8 @@ HEADERS += \
     src/messages/search/SubstringPredicate.hpp \
     src/messages/Selection.hpp \
     src/messages/SharedMessageBuilder.hpp \
-    src/plugin_interfaces/Completer.hpp \
-    src/plugin_interfaces/MessageCreator.hpp \
+    src/plugin_interfaces/API.hpp \
     src/plugin_interfaces/Plugin.hpp \
-    src/plugin_interfaces/SettingsPlugin.hpp \
     src/PrecompiledHeader.hpp \
     src/providers/bttv/BttvEmotes.hpp \
     src/providers/bttv/LoadBttvChannelEmote.hpp \

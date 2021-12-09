@@ -214,6 +214,8 @@ set(SOURCE_FILES
         providers/irc/IrcServer.cpp
         providers/irc/IrcServer.hpp
 
+        plugin_interfaces/API.hpp
+        plugin_interfaces/API.cpp
         plugin_interfaces/Plugin.hpp
         plugin_interfaces/Plugin.cpp
 

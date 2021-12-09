@@ -7,6 +7,7 @@
 #include <chaiscript/chaiscript.hpp>
 #include <pajlada/settings/setting.hpp>
 
+#include "common/CompletionModel.hpp"
 #include "common/QLogging.hpp"
 
 namespace chatterino {
@@ -14,26 +15,9 @@ namespace chatterino {
 namespace plugin_interfaces {
 
     class Plugin;
-    class API
-    {
-    public:
-        std::string getStringSetting(std::string name)
-        {
-            auto val = pajlada::Settings::Setting<std::string>::get(name);
-            return val;
-        }
-        void setStringSetting(std::string name, std::string value)
-        {
-            pajlada::Settings::Setting<std::string>::set(name, value);
-        }
-        void log(std::string message);
-
-        API(Plugin *_owner)
-            : owner(_owner){};
-
-    private:
-        Plugin *owner;
-    };
+    /**
+     * @brief Represents a loaded Plugin to c++ code.
+     */
     class Plugin
     {
     public:
@@ -52,11 +36,20 @@ namespace plugin_interfaces {
             return QFileInfo(this->path).baseName();
         };
 
+        bool refreshCustomCompletions(
+            std::function<void(const QString &str,
+                               CompletionModel::TaggedString::Type type)>
+                addString,
+            QString prefix, QString message, bool isFirstWord,
+            Channel &channel);
+
         void initialize(){};
 
     private:
         const QString path;
         chaiscript::ChaiScript vm;
+
+        chaiscript::Boxed_Value getCallbackFunction(QString eventName);
     };
 
 }  // namespace plugin_interfaces
