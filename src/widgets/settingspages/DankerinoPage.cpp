@@ -73,29 +73,11 @@ void DankerinoPage::initLayout(GeneralPageView &layout)
         layout.addWidget(pluginsDisplay);
         {
             auto list = new QVBoxLayout(pluginsDisplay);
-            /*
             getApp()->plugins->forEachPlugin(
-                [&list](plugin_interfaces::Plugin *plugin) {
-                    auto settings =
-                        dynamic_cast<plugin_interfaces::SettingsPlugin *>(
-                            plugin);
-                    if (settings)
-                    {
-                        auto label = new QLabel(plugin->name() +
-                                                " <a href=.>Open settings</a>");
-                        list->addWidget(label);
-                        QObject::connect(label, &QLabel::linkActivated,
-                                         [pl = settings]() {
-                                             pl->openSettings();
-                                         });
-                    }
-                    else
-                    {
-                        auto label = new QLabel(plugin->name());
-                        list->addWidget(label);
-                    }
+                [&list](std::shared_ptr<plugin_interfaces::Plugin> plugin) {
+                    auto label = new QLabel(plugin->name());
+                    list->addWidget(label);
                 });
-                */
         }
     }
 
