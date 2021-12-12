@@ -9,6 +9,150 @@
 #include "singletons/WindowManager.hpp"
 #include "widgets/Window.hpp"
 
+namespace {
+
+void addNetworkRequest(chaiscript::ChaiScript &chai)
+{
+    using namespace chatterino;
+
+    chai.add(chaiscript::user_type<NetworkRequest>(), "NetworkRequest");
+    chai.add(chaiscript::constructor<NetworkRequest(const std::string,
+                                                    NetworkRequestType)>(),
+             "NetworkRequest");
+    chai.add(chaiscript::fun([](NetworkRequest *that, NetworkErrorCallback cb) {
+                 return std::move(*that).onError(cb);
+             }),
+             "onError");
+    chai.add(
+        chaiscript::fun([](NetworkRequest *that, NetworkFinallyCallback cb) {
+            return std::move(*that).finally(cb);
+        }),
+        "finally");
+    chai.add(chaiscript::fun([](NetworkRequest *that, int ms) {
+                 return std::move(*that).timeout(ms);
+             }),
+             "timeout");
+    chai.add(chaiscript::fun([](NetworkRequest *that) {
+                 return std::move(*that).cache();
+             }),
+             "cache");
+    chai.add(chaiscript::fun(&NetworkRequest::execute), "execute");
+    chai.add(
+        chaiscript::fun([](NetworkRequest *that, const std::string headerName,
+                           const std::string value) {
+            return std::move(*that).header(headerName.c_str(), value.c_str());
+        }),
+        "header");
+    chai.add(
+        chaiscript::fun([](NetworkRequest *that, NetworkSuccessCallback cb) {
+            return std::move(*that).onSuccess(cb);
+        }),
+        "onSuccess");
+    {
+        auto m = chaiscript::ModulePtr(new chaiscript::Module());
+        using ReqTyp = NetworkRequestType;
+        chaiscript::utility::add_class<ReqTyp>(*m, "NetworkRequestType",
+                                               {
+                                                   {ReqTyp::Get, "GET"},
+                                                   {ReqTyp::Post, "POST"},
+                                                   {ReqTyp::Put, "PUT"},
+                                                   {ReqTyp::Delete, "DELETE"},
+                                                   {ReqTyp::Patch, "PATCH"},
+                                               });
+        chai.add(m);
+    }
+
+    chai.add(chaiscript::user_type<NetworkResult>(), "NetworkResult");
+    chai.add(chaiscript::fun(&NetworkResult::parseJson), "parseJson");
+    chai.add(chaiscript::fun(&NetworkResult::parseJsonArray), "parseJsonArray");
+    chai.add(chaiscript::fun(&NetworkResult::getData), "getData");
+    chai.add(chaiscript::fun(&NetworkResult::status), "status");
+}
+void addJSON(chaiscript::ChaiScript &chai)
+{
+    chai.add(chaiscript::fun([](QJsonObject *that, const std::string &key) {
+                 return that->value(QString::fromStdString(key));
+             }),
+             "value");
+
+    chai.add(chaiscript::fun([](QJsonObject *that) {
+                 return QString("QJsonObject(%1 keys)").arg(that->size());
+             }),
+             "to_string");
+    chai.add(chaiscript::fun([](QJsonArray *that) {
+                 return QString("QJsonArray(%1 elements)").arg(that->size());
+             }),
+             "to_string");
+    chai.add(chaiscript::fun([](QJsonValue *) {
+                 return QString("QJsonValue()");
+             }),
+             "to_string");
+    chai.add(chaiscript::fun([](QJsonValueRef *) {
+                 return QString("QJsonValueRef()");
+             }),
+             "to_string");
+
+    chai.add(chaiscript::fun(&QJsonValue::isNull), "isNull");
+    chai.add(chaiscript::fun(&QJsonValue::isBool), "isBool");
+    chai.add(chaiscript::fun(&QJsonValue::isDouble), "isDouble");
+    chai.add(chaiscript::fun(&QJsonValue::isString), "isString");
+    chai.add(chaiscript::fun(&QJsonValue::isArray), "isArray");
+    chai.add(chaiscript::fun(&QJsonValue::isObject), "isObject");
+    chai.add(chaiscript::fun(&QJsonValue::isUndefined), "isUndefined");
+
+    //chai.add(
+    //    chaiscript::fun<bool (QJsonValue::*)(bool) const>(&QJsonValue::toBool),
+    //    "toBool");
+    chai.add(chaiscript::fun(&QJsonValue::toBool), "toBool");
+    //chai.add(
+    //    chaiscript::fun<int (QJsonValue::*)(int) const>(&QJsonValue::toInt),
+    //    "toInt");
+    chai.add(chaiscript::fun(&QJsonValue::toInt), "toInt");
+
+    chai.add(chaiscript::fun([](QJsonValue *that) {
+                 return that->toString().toStdString();
+             }),
+             "to_string");
+    //chai.add(
+    //    chaiscript::fun<QString (QJsonValue::*)() const>(&QJsonValue::toString),
+    //    "toString");
+    chai.add(chaiscript::fun([](QJsonValue *that) {
+                 return that->toString();
+             }),
+             "toString");
+    chai.add(chaiscript::fun([](QJsonValue *that) {
+                 return that->toArray();
+             }),
+             "toArray");
+    chai.add(chaiscript::fun([](QJsonValue *that) {
+                 return that->toObject();
+             }),
+             "toObject");
+    chai.add(chaiscript::fun([](QJsonArray *that, int i) {
+                 return that->at(i);
+             }),
+             "at");
+    chai.add(chaiscript::fun([](QJsonArray *that) {
+                 std::vector<QJsonValue> out;
+                 for (const auto val : *that)
+                 {
+                     out.push_back(val);
+                 }
+                 return out;
+             }),
+             "to_vector");
+    chai.add(chaiscript::fun([](QJsonArray *that) {
+                 return that->size();
+             }),
+             "size");
+
+    chai.add(chaiscript::fun([](QJsonValueRef *that) {
+                 return QJsonValue(*that);
+             }),
+             "toValue");
+}
+
+}  // namespace
 namespace chatterino {
 
 namespace plugin_interfaces {
@@ -16,48 +160,28 @@ namespace plugin_interfaces {
     {
         this->vm.add_global(chaiscript::var<API *>(new API(this)), "api");
         this->vm.add(chaiscript::fun(&API::log), "log");
+        this->vm.add(chaiscript::fun([](API *that, QString data) {
+                         that->log(data.toStdString());
+                     }),
+                     "log");
         this->vm.add(chaiscript::fun(&API::getStringSetting),
                      "getStringSetting");
         this->vm.add(chaiscript::fun(&API::setStringSetting),
                      "setStringSetting");
-        this->vm.add(
-            chaiscript::user_type<CompletionModel::TaggedString::Type>(),
-            "TaggedStringType");
         this->vm.add_global_const(chaiscript::const_var(Outcome(Failure)),
                                   "Failure");
         this->vm.add_global_const(chaiscript::const_var(Outcome(Success)),
                                   "Success");
+        this->vm.add(chaiscript::fun([](QString *that) {
+                         return that->toStdString();
+                     }),
+                     "to_string");
 
-        this->vm.add(chaiscript::user_type<NetworkRequest>(), "NetworkRequest");
-        this->vm.add(chaiscript::constructor<NetworkRequest(
-                         const std::string, NetworkRequestType)>(),
-                     "NetworkRequest");
+        addNetworkRequest(this->vm);
+        addJSON(this->vm);
         this->vm.add(
-            chaiscript::fun([](NetworkRequest *that, NetworkErrorCallback cb) {
-                return std::move(*that).onError(cb);
-            }),
-            "onError");
-        this->vm.add(chaiscript::fun(
-                         [](NetworkRequest *that, NetworkFinallyCallback cb) {
-                             return std::move(*that).finally(cb);
-                         }),
-                     "finally");
-        this->vm.add(chaiscript::fun([](NetworkRequest *that, int ms) {
-                         return std::move(*that).timeout(ms);
-                     }),
-                     "timeout");
-        this->vm.add(chaiscript::fun([](NetworkRequest *that) {
-                         return std::move(*that).cache();
-                     }),
-                     "cache");
-        this->vm.add(chaiscript::fun(&NetworkRequest::execute), "execute");
-        //// todo: NetworkRequest::header
-        this->vm.add(chaiscript::fun(
-                         [](NetworkRequest *that, NetworkSuccessCallback cb) {
-                             return std::move(*that).onSuccess(cb);
-                         }),
-                     "onSuccess");
-
+            chaiscript::user_type<CompletionModel::TaggedString::Type>(),
+            "TaggedStringType");
         {
             auto m = chaiscript::ModulePtr(new chaiscript::Module());
             using TS = CompletionModel::TaggedString::Type;
@@ -81,20 +205,7 @@ namespace plugin_interfaces {
                 });
             this->vm.add(m);
         }
-        {
-            auto m = chaiscript::ModulePtr(new chaiscript::Module());
-            using ReqTyp = NetworkRequestType;
-            chaiscript::utility::add_class<ReqTyp>(
-                *m, "NetworkRequestType",
-                {
-                    {ReqTyp::Get, "GET"},
-                    {ReqTyp::Post, "POST"},
-                    {ReqTyp::Put, "PUT"},
-                    {ReqTyp::Delete, "DELETE"},
-                    {ReqTyp::Patch, "PATCH"},
-                });
-            this->vm.add(m);
-        }
+
         try
         {
             this->vm.eval_file(
