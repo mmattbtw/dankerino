@@ -107,9 +107,11 @@ namespace {
 
         for (const auto jsonMessage : jsonMessages)
         {
-            auto content = jsonMessage.toString().toUtf8();
+            auto content = jsonMessage.toString();
+            content.replace(COMBINED_FIXER, ZERO_WIDTH_JOINER);
 
-            auto message = Communi::IrcMessage::fromData(content, nullptr);
+            auto message =
+                Communi::IrcMessage::fromData(content.toUtf8(), nullptr);
 
             if (message->command() == "CLEARCHAT")
             {
@@ -160,14 +162,16 @@ TwitchChannel::TwitchChannel(const QString &name)
 {
     qCDebug(chatterinoTwitch) << "[TwitchChannel" << name << "] Opened";
 
-    this->managedConnect(getApp()->accounts->twitch.currentUserChanged, [=] {
-        this->setMod(false);
-    });
+    this->signalHolder_.managedConnect(
+        getApp()->accounts->twitch.currentUserChanged, [=] {
+            this->setMod(false);
+        });
 
     // pubsub
-    this->managedConnect(getApp()->accounts->twitch.currentUserChanged, [=] {
-        this->refreshPubsub();
-    });
+    this->signalHolder_.managedConnect(
+        getApp()->accounts->twitch.currentUserChanged, [=] {
+            this->refreshPubsub();
+        });
     this->refreshPubsub();
     this->userStateChanged.connect([this] {
         this->refreshPubsub();
@@ -382,6 +386,10 @@ void TwitchChannel::sendMessage(const QString &message)
     // Do last message processing
     QString parsedMessage = app->emotes->emojis.replaceShortCodes(message);
 
+    // This is to make sure that combined emoji go through properly, see
+    // https://github.com/Chatterino/chatterino2/issues/3384 and
+    // https://mm2pl.github.io/emoji_rfc.pdf for more details
+    parsedMessage.replace(ZERO_WIDTH_JOINER, ESCAPE_TAG);
     parsedMessage = parsedMessage.simplified();
 
     if (parsedMessage.isEmpty())

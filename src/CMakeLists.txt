@@ -614,6 +614,12 @@ set_target_properties(${LIBRARY_PROJECT}
     AUTOUIC ON
     )
 
+# Used to provide a date of build in the About page (for nightly builds). Getting the actual time of
+# compilation in CMake is a more involved, as documented in https://stackoverflow.com/q/24292898.
+# For CI runs, however, the date of build file generation should be consistent with the date of
+# compilation so this approximation is "good enough" for our purpose.
+string(TIMESTAMP cmake_gen_date "%Y-%m-%d")
+
 target_compile_definitions(${LIBRARY_PROJECT} PUBLIC
     CHATTERINO
     UNICODE
@@ -626,6 +632,8 @@ target_compile_definitions(${LIBRARY_PROJECT} PUBLIC
     CHATTERINO_GIT_RELEASE=\"${GIT_RELEASE}\"
     CHATTERINO_GIT_COMMIT=\"${GIT_COMMIT}\"
     -DCHAISCRIPT_NO_DYNLOAD
+
+    CHATTERINO_CMAKE_GEN_DATE=\"${cmake_gen_date}\"
     )
 if (USE_SYSTEM_QTKEYCHAIN)
     target_compile_definitions(${LIBRARY_PROJECT} PUBLIC

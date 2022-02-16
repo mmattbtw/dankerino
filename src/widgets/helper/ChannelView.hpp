@@ -160,7 +160,7 @@ private:
                           const MessageLayoutElement *hoverLayoutElement,
                           MessageLayoutPtr layout);
     void addContextMenuItems(const MessageLayoutElement *hoveredElement,
-                             MessageLayoutPtr layout);
+                             MessageLayoutPtr layout, QMouseEvent *event);
     int getLayoutWidth() const;
     void updatePauses();
     void unpaused();
@@ -238,8 +238,10 @@ private:
 
     LimitedQueue<MessageLayoutPtr> messages_;
 
-    std::vector<pajlada::Signals::ScopedConnection> connections_;
-    std::vector<pajlada::Signals::ScopedConnection> channelConnections_;
+    pajlada::Signals::SignalHolder signalHolder_;
+
+    // channelConnections_ will be cleared when the underlying channel of the channelview changes
+    pajlada::Signals::SignalHolder channelConnections_;
 
     std::unordered_set<std::shared_ptr<MessageLayout>> messagesOnScreen_;
 

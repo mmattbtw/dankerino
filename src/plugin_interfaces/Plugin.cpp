@@ -201,7 +201,9 @@ namespace plugin_interfaces {
                     {TS::TwitchSubscriberEmote, "TwitchSubscriberEmote"},
                     {TS::Emoji, "Emoji"},
                     {TS::EmoteEnd, "EmoteEnd"},
-                    {TS::Command, "Command"},
+                    {TS::CustomCommand, "CustomCommand"},
+                    {TS::ChatterinoCommand, "ChatterinoCommand"},
+                    {TS::TwitchCommand, "TwitchCommand"},
                 });
             this->vm.add(m);
         }
@@ -223,6 +225,24 @@ namespace plugin_interfaces {
                                     .arg(this->name(), e.what()),
                                 QMessageBox::Ok);
             msgBox->show();
+        }
+        catch (const chaiscript::exception::dispatch_error e)
+        {
+            for (const auto &f : e.functions)
+            {
+                qDebug() << "- params: ";
+                for (const auto &p : f->get_param_types())
+                {
+                    qDebug() << "- typ: " << QString::fromStdString(p.name());
+                }
+            }
+            qDebug() << "params;;";
+            for (const auto &p : e.parameters)
+            {
+                qDebug() << "- name: "
+                         << QString::fromStdString(p.get_type_info().name());
+            }
+            throw;
         }
     }
 

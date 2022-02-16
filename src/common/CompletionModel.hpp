@@ -32,7 +32,9 @@ public:
             EmoteEnd,
             // end emotes
 
-            Command,
+            CustomCommand,
+            ChatterinoCommand,
+            TwitchCommand,
         };
 
         TaggedString(const QString &string, Type type);
