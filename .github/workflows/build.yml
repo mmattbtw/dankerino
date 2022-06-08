@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - dankerino
+      - zneix/temp/*
   pull_request:
 
 concurrency: 
