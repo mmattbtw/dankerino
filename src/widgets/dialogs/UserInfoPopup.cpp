@@ -498,11 +498,16 @@ UserInfoPopup::UserInfoPopup(bool closeAutomatically, QWidget *parent)
         });
 
         QObject::connect(openLogsMM.getElement(), &Button::leftClicked, [this] {
-            QDesktopServices::openUrl("https://logs.mmattbot.com/?channel=" + this->channel_->getName() + "&username=" + this->userName_);
-            });
+            QDesktopServices::openUrl("https://logs.mmattbot.com/?channel=" +
+                                      this->channel_->getName() +
+                                      "&username=" + this->userName_);
+        });
 
-        QObject::connect(openLogsIVR.getElement(), &Button::leftClicked, [this] {
-            QDesktopServices::openUrl("https://logs.ivr.fi/?channel=" + this->channel_->getName() + "&username=" + this->userName_);
+        QObject::connect(
+            openLogsIVR.getElement(), &Button::leftClicked, [this] {
+                QDesktopServices::openUrl("https://logs.ivr.fi/?channel=" +
+                                          this->channel_->getName() +
+                                          "&username=" + this->userName_);
             });
         // userstate
         this->userStateChanged_.connect([this, mod, unmod, vip,
