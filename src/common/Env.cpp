@@ -53,7 +53,7 @@ Env::Env()
                         "recent-messages/%1"))
     , linkResolverUrl(readStringEnv(
           "CHATTERINO2_LINK_RESOLVER_URL",
-          "https://braize.pajlada.com/chatterino/link_resolver/%1"))
+          "https://zneix.eu/chatterino/link_resolver/%1"))
     , twitchServerHost(
           readStringEnv("CHATTERINO2_TWITCH_SERVER_HOST", "irc.chat.twitch.tv"))
     , twitchServerPort(readPortEnv("CHATTERINO2_TWITCH_SERVER_PORT", 443))

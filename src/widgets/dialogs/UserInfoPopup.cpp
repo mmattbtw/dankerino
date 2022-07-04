@@ -382,6 +382,12 @@ UserInfoPopup::UserInfoPopup(bool closeAutomatically, QWidget *parent)
         auto checkAfk = user.emplace<EffectLabel2>(this);
         checkAfk->getLabel().setText("Check AFK");
 
+        auto openLogsMM = user.emplace<EffectLabel2>(this);
+        openLogsMM->getLabel().setText("Open logs (mmattbot.com)");
+
+        auto openLogsIVR = user.emplace<EffectLabel2>(this);
+        openLogsIVR->getLabel().setText("Open logs (ivr.fi)");
+
         auto mod = user.emplace<Button>(this);
         mod->setPixmap(getResources().buttons.mod);
         mod->setScaleIndependantSize(30, 30);
@@ -491,6 +497,13 @@ UserInfoPopup::UserInfoPopup(bool closeAutomatically, QWidget *parent)
                 .execute();
         });
 
+        QObject::connect(openLogsMM.getElement(), &Button::leftClicked, [this] {
+            QDesktopServices::openUrl("https://logs.mmattbot.com/?channel=" + this->channel_->getName() + "&username=" + this->userName_);
+            });
+
+        QObject::connect(openLogsIVR.getElement(), &Button::leftClicked, [this] {
+            QDesktopServices::openUrl("https://logs.ivr.fi/?channel=" + this->channel_->getName() + "&username=" + this->userName_);
+            });
         // userstate
         this->userStateChanged_.connect([this, mod, unmod, vip,
                                          unvip]() mutable {

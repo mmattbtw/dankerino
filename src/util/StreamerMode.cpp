@@ -32,7 +32,7 @@ const QStringList &broadcastingBinaries()
 #ifdef USEWINSDK
     static QStringList bins = {
         "obs.exe",         "obs64.exe",        "PRISMLiveStudio.exe",
-        "XSplit.Core.exe", "TwitchStudio.exe", "vMix64.exe"};
+        "XSplit.Core.exe", "TwitchStudio.exe", "vMix64.exe", "osu!.exe"};
 #else
     static QStringList bins = {"obs", "Twitch Studio", "Streamlabs Desktop"};
 #endif

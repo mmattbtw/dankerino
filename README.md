@@ -1,10 +1,15 @@
 ![alt text](https://fourtf.com/img/chatterino-icon-64.png)
-Chatterino 2 [![GitHub Actions Build (Windows, Ubuntu, MacOS)](https://github.com/Mm2PL/chatterino2/workflows/Build/badge.svg?branch=dankerino)](https://github.com/Mm2PL/chatterino2/actions?query=workflow%3ABuild+branch%3Adankerino)
+Chatterino 2 [![GitHub Actions Build (Windows, Ubuntu, MacOS)](https://github.com/mmattbtw/dankerino/workflows/Build/badge.svg?branch=dankerino)](https://github.com/mmattbtw/dankerino/actions?query=workflow%3ABuild+branch%3Adankerino)
 ============
+
+# ⚠️  THIS IS NOT MEANT FOR ANYONE ELSES USE.
+PLEASE USE [DANKERINO](https://github.com/mm2pl/dankerino)
 
 ## Dankerino
 
 Dankerino is a fork of Chatterino 2.
+
+this fork was to add some things that I personally wanted in chatterino, that isn't needed in upstream or in dankerino, which is why if you are reading this, you should use Dankerino and not this garbage I've compiled over here.
 
 ### Features of Dankerino
 
